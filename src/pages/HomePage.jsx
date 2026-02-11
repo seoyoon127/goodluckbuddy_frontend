@@ -1,4 +1,4 @@
-import LogoNavbar from "../components/LogoNavbar"
+import LogoNavbar from "../components/navbar/LogoNavbar"
 
 const HomePage = () => {
     return (
