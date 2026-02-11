@@ -1,24 +1,21 @@
 import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
 import { IoPersonOutline } from "react-icons/io5";
-import { HiOutlineHome } from "react-icons/hi2";
 import { IoChevronBackOutline } from "react-icons/io5";
+import LogoSrc from "../assets/logo.png"
+import RoundWhiteButton from './RoundWhiteButton';
 
-const Navbar = ({title, mypage}) =>{
+const LogoNavbar = ({mypage}) =>{
     const navigate = useNavigate();
-    const handleGoBack = () => {
-        navigate(-1);
-    };
     return(
         <Container>
-            <IconPosition onClick={handleGoBack}><BackIcon/></IconPosition>
-            <Title>{title}</Title>
+            <LogoPosition onClick={()=>navigate("/home")}><LogoImage src={LogoSrc} alt="logo"/></LogoPosition>
             {mypage && <IconPosition2 onClick={()=>navigate("/mypage")}><MyPageIcon/></IconPosition2>}
-            {!mypage && <IconPosition2 onClick={()=>navigate("/home")}><HomeIcon/></IconPosition2>}
+            {!mypage && <IconPosition2 onClick={()=>navigate("/login")}><RoundWhiteButton text="로그인"/></IconPosition2>}
         </Container>
     )
 }
-export default Navbar
+export default LogoNavbar
 
 const Container = styled.div`
     width:100%;
@@ -27,38 +24,31 @@ const Container = styled.div`
     background-color:white;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     display:flex;
-    justify-content: center;
+    justify-content:space-between;
     align-items:center;
     font-family: "Pretendard Variable";
 `;
-const IconPosition = styled.div`
+const LogoPosition = styled.div`
     position:relative;
-    left: -100px;
+    left: 15px;
     top:3px;
 `;
 const IconPosition2 = styled.div`
     position:relative;
-    left: 90px;
+    right:35px;
     top:3px;
 `;
-const Title = styled.div`
-    font-size:17px;
-    font-weight:500;
-    color:black;
-    position:relative;
-`
+
+const LogoImage = styled.img`
+    width:130px;
+    height:65px;
+`;
+
 const MyPageIcon = styled(IoPersonOutline)`
     width:24px;
     height:24px;
-    color: #000;
 `;
-const HomeIcon = styled(HiOutlineHome)`
+const LoginButton = styled`
     width:24px;
     height:24px;
-    color: #000;
 `;
-const BackIcon= styled(IoChevronBackOutline)`
-    width:24px;
-    height:24px;
-    color: #000;
-`
