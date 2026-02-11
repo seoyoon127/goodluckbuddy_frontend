@@ -1,10 +1,8 @@
 import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
 import { IoPersonOutline } from "react-icons/io5";
-import { IoChevronBackOutline } from "react-icons/io5";
 import LogoSrc from "../../assets/logo.png"
 import RoundWhiteButton from '../button/RoundWhiteButton';
-import RoundGreenButton from '../button/RoundGreenButton';
 
 const LogoNavbar = ({mypage}) =>{
     const navigate = useNavigate();
@@ -20,7 +18,6 @@ export default LogoNavbar
 
 const Container = styled.div`
     width:100%;
-    max-width:393px;
     height:60px;
     background-color:white;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);

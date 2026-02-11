@@ -22,7 +22,6 @@ export default Navbar
 
 const Container = styled.div`
     width:100%;
-    max-width:393px;
     height:60px;
     background-color:white;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
