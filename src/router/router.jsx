@@ -1,5 +1,6 @@
 import {createBrowserRouter} from "react-router-dom";
 import RootLayout from "../layout/RootLayout";
+import MyPage from "../pages/MyPage";
 
 const router = createBrowserRouter([
     {
@@ -29,7 +30,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'mypage',
-                element: <h1>마이 페이지</h1>
+                element: <MyPage/>
             }]
     }
 ])
