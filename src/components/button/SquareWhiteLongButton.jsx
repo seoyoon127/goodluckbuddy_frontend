@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-const RoundWhiteButton = ({text, width}) => {
+const RoundWhiteButton = ({text, width, onClickEvent}) => {
     return (
         <>
-            <Button width={width}>{text}</Button>
+            <Button width={width} onClick={onClickEvent}>{text}</Button>
         </>
     )
 }
