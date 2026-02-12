@@ -11,23 +11,21 @@ const Wrapper = styled.div`
 `;
 
 const Main = styled.div`
-  width: 393px;          /* ⭐ PC 기본: 폰 폭 */
-  height: 852px;         /* ⭐ PC 기본: 폰 높이 */
+  width: 393px;  
+  height: 852px;  
   background: #fff;
   position: relative;
   font-family: "Pretendard Variable";
   overflow: hidden;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  border: 3px solid blue;
 
-  /* 📱 모바일에서는 풀스크린 */
+  // 모바일
   @media (max-width: 480px) {
     width: 100vw;
     height: 100vh;
     border-radius: 0;
     box-shadow: none;
-    border: 1px solid red;
   }
 `;
 
