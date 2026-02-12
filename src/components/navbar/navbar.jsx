@@ -22,7 +22,7 @@ export default Navbar
 
 const Container = styled.div`
     width:100%;
-    height:60px;
+    height:80px;
     background-color:white;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     display:flex;
@@ -41,23 +41,23 @@ const IconPosition2 = styled.div`
     top:3px;
 `;
 const Title = styled.div`
-    font-size:17px;
+    font-size:18px;
     font-weight:500;
     color:black;
     position:relative;
 `
 const MyPageIcon = styled(IoPersonOutline)`
-    width:24px;
-    height:24px;
+    width:30px;
+    height:30px;
     color: #000;
 `;
 const HomeIcon = styled(HiOutlineHome)`
-    width:24px;
-    height:24px;
+    width:30px;
+    height:30px;
     color: #000;
 `;
 const BackIcon= styled(IoChevronBackOutline)`
-    width:24px;
-    height:24px;
+    width:30px;
+    height:30px;
     color: #000;
 `
