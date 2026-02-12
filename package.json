@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@iconify/react": "^6.0.2",
     "react": "^18.x",
     "react-dom": "^18.x",
+    "react-icons": "^5.5.0",
     "react-router-dom": "^6.x",
     "styled-components": "^6.3.9"
   },
