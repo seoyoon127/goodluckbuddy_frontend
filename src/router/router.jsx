@@ -3,6 +3,7 @@ import RootLayout from "../layout/RootLayout";
 import MyPage from "../pages/MyPage";
 import HomePage from "../pages/HomePage";
 import MainPage from "../pages/MainPage";
+import LoginPage from "../pages/LoginPage";
 
 const router = createBrowserRouter([
     {
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'login',
-                element: <h1>로그인 페이지</h1>
+                element: <LoginPage/>
             },
             {
                 path: 'signup',

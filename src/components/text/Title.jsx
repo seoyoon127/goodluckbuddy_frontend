@@ -4,8 +4,8 @@ const Title = ({textGreen, text}) => {
     return (
         <>
             <Wrapper>
-                <TitleGreen> {textGreen} </TitleGreen>
-                <TitleBlack> {text} </TitleBlack>
+                <TitleGreen>{textGreen}</TitleGreen>
+                <TitleBlack>{text}</TitleBlack>
             </Wrapper>
         </>
     )
@@ -13,17 +13,18 @@ const Title = ({textGreen, text}) => {
 export default Title;
 
 const Wrapper = styled.div`
-     display:flex;
+    white-space: pre-line;
+    text-align: center;  
 `;
 
-const TitleBlack = styled.div`
+const TitleBlack = styled.span`
     font-size:19px;
     font-weight:700;
     color:black;
     position:relative;
 `;
 
-const TitleGreen = styled.div`
+const TitleGreen = styled.span`
     font-size:19px;
     font-weight:700;
     color:#68AB46;
