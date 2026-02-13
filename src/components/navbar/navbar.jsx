@@ -4,14 +4,14 @@ import { IoPersonOutline } from "react-icons/io5";
 import { HiOutlineHome } from "react-icons/hi2";
 import { IoChevronBackOutline } from "react-icons/io5";
 
-const Navbar = ({title, mypage, none}) =>{
+const Navbar = ({title, mypage, none, backNone}) =>{
     const navigate = useNavigate();
     const handleGoBack = () => {
         navigate(-1);
     };
     return(
         <Container>
-            <IconPosition onClick={handleGoBack}><BackIcon/></IconPosition>
+            {!backNone && <IconPosition onClick={handleGoBack}><BackIcon/></IconPosition>}
             <Title>{title}</Title>
             {mypage && !none && <IconPosition2 onClick={()=>navigate("/mypage")}><MyPageIcon/></IconPosition2>}
             {!mypage && !none && <IconPosition2 onClick={()=>navigate("/home")}><HomeIcon/></IconPosition2>}
