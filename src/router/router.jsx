@@ -4,6 +4,7 @@ import MyPage from "../pages/MyPage";
 import HomePage from "../pages/HomePage";
 import MainPage from "../pages/MainPage";
 import LoginPage from "../pages/LoginPage";
+import SignupPage from "../pages/SignupPage";
 
 const router = createBrowserRouter([
     {
@@ -21,7 +22,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'signup',
-                element: <h1>회원가입 페이지</h1>
+                element: <SignupPage/>
             },
             {
                 path: 'home',
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
                 element: <h1>추천 편지 페이지</h1>
             },
             {
-                path: 'mypage',
+                path: 'my',
                 element: <MyPage/>
             }]
     }
