@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-const RoundWhiteButton = ({text, width}) => {
+const RoundWhiteButton = ({text, width, onClick}) => {
     return (
         <>
-            <Button width={width}>{text}</Button>
+            <Button width={width} onClick={onClick}>{text}</Button>
         </>
     )
 }
@@ -25,4 +25,8 @@ const Button = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &:focus {
+        outline: none;
+    }
 `

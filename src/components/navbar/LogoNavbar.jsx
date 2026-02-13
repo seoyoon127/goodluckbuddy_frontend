@@ -4,13 +4,13 @@ import { IoPersonOutline } from "react-icons/io5";
 import LogoSrc from "../../assets/logo.png"
 import RoundWhiteButton from '../button/RoundWhiteButton';
 
-const LogoNavbar = ({mypage}) =>{
+const LogoNavbar = ({mypage, none}) =>{
     const navigate = useNavigate();
     return(
         <Container>
             <LogoPosition onClick={()=>navigate("/home")}><LogoImage src={LogoSrc} alt="logo"/></LogoPosition>
-            {mypage && <IconPosition2 onClick={()=>navigate("/mypage")}><MyPageIcon/></IconPosition2>}
-            {!mypage && <IconPosition2 onClick={()=>navigate("/login")}><RoundWhiteButton text="로그인"/></IconPosition2>}
+            {mypage && !none && <IconPosition2 onClick={()=>navigate("/mypage")}><MyPageIcon/></IconPosition2>}
+            {!mypage && !none && <IconPosition2 onClick={()=>navigate("/login")}><RoundWhiteButton text="로그인"/></IconPosition2>}
         </Container>
     )
 }
@@ -18,7 +18,7 @@ export default LogoNavbar
 
 const Container = styled.div`
     width:100%;
-    height:60px;
+    height:80px;
     background-color:white;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     display:flex;
