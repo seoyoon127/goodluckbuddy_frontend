@@ -1,18 +1,19 @@
 import styled from "styled-components";
 
-const RoundWhiteButton = ({text, onClick}) => {
+const RoundGreenButton = ({text, onClick, width}) => {
     return (
         <>
-            <Button onClick={onClick}>{text}</Button>
+            <Button onClick={onClick} width={width}>{text}</Button>
         </>
     )
 }
-export default RoundWhiteButton;
+export default RoundGreenButton;
 
 const Button = styled.button`
+    width: ${props => props.width || "100%"};
     font-size: 12px;
-    padding: 3px 7px;
-    border-radius: 999px;
+    padding: 5px 10px;
+    border-radius: 20px;
 
     color: white;
     border: 1px solid #68AB46;
