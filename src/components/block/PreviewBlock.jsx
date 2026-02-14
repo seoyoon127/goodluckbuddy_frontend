@@ -9,7 +9,7 @@ const PreviewBlock = ({title, content, nickname, date, likeCount, category}) => 
                 <TextWrapper><Title text={title}/></TextWrapper>
                 <Content>{content}</Content>
                 <PreviewWrapper>
-                    <Infos>{nickname}/{date}/❤️{likeCount}</Infos>
+                    <Infos><Nickname>{nickname}</Nickname>/{date}/❤️{likeCount}</Infos>
                     <RoundGreenButton text={category} width="50px"/>
                 </PreviewWrapper>
             </Block>
@@ -45,8 +45,16 @@ const Content = styled.div`
 `;
 
 const Infos = styled.div`
+    display: flex;
     font-size: 14px;
     color: #526548;
+    white-space: nowrap;
+`;
+
+const Nickname = styled.div`
+    max-width: 85px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 const PreviewWrapper = styled.div`

@@ -5,7 +5,8 @@ import HomePage from "../pages/HomePage";
 import MainPage from "../pages/MainPage";
 import LoginPage from "../pages/LoginPage";
 import SignupPage from "../pages/SignupPage";
-import NotFound from "../pages/NotFound"
+import NotFound from "../pages/NotFound";
+import RecommendPage from "../pages/RecommendPage";
 
 const router = createBrowserRouter([
     {
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'recommend',
-                element: <h1>추천 편지 페이지</h1>
+                element: <RecommendPage/>
             },
             {
                 path: 'my',
