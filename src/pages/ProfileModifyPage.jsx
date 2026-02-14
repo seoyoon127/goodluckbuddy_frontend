@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { useState} from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/navbar/navbar"
 import Title from "../components/text/Title"
 import SubTitle from "../components/text/SubTitle"
@@ -12,10 +12,9 @@ import days from "../data/days";
 import Button from "../components/button/SquareGreenLongButton"
 import InvalidText from "../components/text/InvalidText";
 import validate from "../validate/validateProfile";
-import { useNavigate } from "react-router-dom";
 
-const MyPage = () => {
-    const [nickname, setNickname] = useState(null);
+const ProfileModifyPage = () => {
+    const [nickname, setNickname] = useState("");
     const [gender, setGender] = useState(null);
     const [year, setYear] = useState("년");
     const [month, setMonth] = useState("월");
@@ -29,11 +28,33 @@ const MyPage = () => {
         category: ""
     });
 
-    const navigate = useNavigate();
+    const profile = {
+        nickname: "닉네임",
+        gender: "FEMALE",
+        birth: "1999-03-21",
+        category: "친구"
+    };
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+
+            setNickname(profile.nickname);
+            setGender(profile.gender);
+
+            const [y, m, d] = profile.birth.split("-");
+            setYear(y);
+            setMonth(m);
+            setDay(d);
+
+            setCategory(profile.category);
+        };
+
+        fetchProfile();
+    }, []);
 
     return (
         <>
-            <Navbar title={"회원가입"} backNone={true} none={true}/>
+            <Navbar title={"회원정보 수정"} none={true}/>
             <Wrapper>
                 <Title text={"회원 정보를 입력해주세요"}/>
                 <InputWrapper>
@@ -84,7 +105,7 @@ const MyPage = () => {
                         <InvalidText text={errors.category} />
                     </ErrorSlot>
                 </InputWrapper>
-                <Button text={"회원가입 하기"}  
+                <Button text={"변경사항 저장"}  
                 onClick={() => {
                     const { isValid, errors } = validate({
                         nickname,
@@ -97,15 +118,22 @@ const MyPage = () => {
 
                     setErrors(errors);
 
+                    const birth = year + "-" + month + "-" + day
+
                     if (isValid) {
-                        navigate("/home");
+                        if (nickname == profile.nickname && gender == profile.gender && birth == profile.birth && category == profile.category){
+                            alert("변경사항이 없습니다.")
+                        }
+                        else {
+                             alert("변경사항이 저장되었습니다.")
+                        }
                     }
                 }}/>
             </Wrapper>
         </>
     )
 }
-export default MyPage
+export default ProfileModifyPage
 
 const Wrapper = styled.div`
     display: flex;
