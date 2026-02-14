@@ -29,16 +29,17 @@ const Container = styled.div`
     justify-content: center;
     align-items:center;
     font-family: "Pretendard Variable";
+    position: relative;
 `;
 const IconPosition = styled.div`
-    position:relative;
-    left: -100px;
-    top:3px;
+    position: absolute;
+    left: 30px;
+    top:25px;
 `;
 const IconPosition2 = styled.div`
-    position:relative;
-    left: 90px;
-    top:3px;
+    position: absolute;
+    right: 30px;
+    top:25px;
 `;
 const Title = styled.div`
     font-size:18px;

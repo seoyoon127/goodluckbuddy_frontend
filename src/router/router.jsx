@@ -5,12 +5,12 @@ import HomePage from "../pages/HomePage";
 import MainPage from "../pages/MainPage";
 import LoginPage from "../pages/LoginPage";
 import SignupPage from "../pages/SignupPage";
+import NotFound from "../pages/NotFound"
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <RootLayout/>,
-        errorElement: <h1>에러 페이지</h1>,
         children:[
             {
                 index:true,
@@ -35,7 +35,12 @@ const router = createBrowserRouter([
             {
                 path: 'my',
                 element: <MyPage/>
-            }]
+            },
+            {
+                path: '*',
+                element: <NotFound/>
+            }
+        ]
     }
 ])
 
