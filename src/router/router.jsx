@@ -7,6 +7,7 @@ import LoginPage from "../pages/LoginPage";
 import SignupPage from "../pages/SignupPage";
 import NotFound from "../pages/NotFound";
 import RecommendPage from "../pages/RecommendPage";
+import ProfileModifyPage from "../pages/ProfileModifyPage"
 
 const router = createBrowserRouter([
     {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
             {
                 path: 'my',
                 element: <MyPage/>
+            },
+            {
+                path: 'my/profile',
+                element: <ProfileModifyPage/>
             },
             {
                 path: '*',
