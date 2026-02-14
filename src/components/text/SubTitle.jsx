@@ -30,5 +30,4 @@ const TitleGreen = styled.span`
     font-weight:700;
     color:#68AB46;
     position:relative;
-     white-space: nowrap;
 `;
