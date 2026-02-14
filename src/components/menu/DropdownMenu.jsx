@@ -37,10 +37,12 @@ export default DropdownMenu;
 
 const Wrapper = styled.div`
     position: relative;
+    display: inline-block;
+    width: max-content; 
 `;
 
 const Button = styled.button`
-    width: 100%;
+    width: 100%; 
     height: 30px;
     padding: 5px 10px;
     border-radius: 20px;
@@ -65,7 +67,8 @@ const Arrow = styled.span`
 const Menu = styled.div`
     position: absolute;
     top: 45px;
-    width: 80px;
+    width: max-content;
+    min-width: 100%;
 
     background: white;
     border-radius: 8px;

@@ -13,7 +13,7 @@ const Navbar = ({title, mypage, none, backNone}) =>{
         <Container>
             {!backNone && <IconPosition onClick={handleGoBack}><BackIcon/></IconPosition>}
             <Title>{title}</Title>
-            {mypage && !none && <IconPosition2 onClick={()=>navigate("/mypage")}><MyPageIcon/></IconPosition2>}
+            {mypage && !none && <IconPosition2 onClick={()=>navigate("/my")}><MyPageIcon/></IconPosition2>}
             {!mypage && !none && <IconPosition2 onClick={()=>navigate("/home")}><HomeIcon/></IconPosition2>}
         </Container>
     )
@@ -29,16 +29,17 @@ const Container = styled.div`
     justify-content: center;
     align-items:center;
     font-family: "Pretendard Variable";
+    position: relative;
 `;
 const IconPosition = styled.div`
-    position:relative;
-    left: -100px;
-    top:3px;
+    position: absolute;
+    left: 30px;
+    top:25px;
 `;
 const IconPosition2 = styled.div`
-    position:relative;
-    left: 90px;
-    top:3px;
+    position: absolute;
+    right: 30px;
+    top:25px;
 `;
 const Title = styled.div`
     font-size:18px;

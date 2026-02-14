@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
-const RoundWhiteButton = ({text, onClick}) => {
+const SquareGreenButton = ({text, onClick}) => {
     return (
         <>
             <Button onClick={onClick}>{text}</Button>
         </>
     )
 }
-export default RoundWhiteButton;
+export default SquareGreenButton;
 
 const Button = styled.button`
     font-size: 12px;

@@ -4,7 +4,7 @@ import Button from "../button/RoundWhiteButton"
 const BottomLineInput = ({hint, onClick, value, onChange}) => {
     return (
         <>
-            <Input placeholder={hint} maxLength={10} text={value} onChange={onChange}/>
+            <Input placeholder={hint} maxLength={10} value={value} onChange={onChange}/>
             <BtnPosition>
                 <Button text={"중복확인"} onClick={onClick}/>
             </BtnPosition>
@@ -25,6 +25,6 @@ const Input = styled.input`
 
 const BtnPosition = styled.div`
     position: relative;
-    top:-30px;
+    top:-32px;
     left: 85px;
 `;

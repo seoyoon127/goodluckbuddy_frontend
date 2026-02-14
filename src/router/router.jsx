@@ -5,12 +5,15 @@ import HomePage from "../pages/HomePage";
 import MainPage from "../pages/MainPage";
 import LoginPage from "../pages/LoginPage";
 import SignupPage from "../pages/SignupPage";
+import NotFound from "../pages/NotFound";
+import RecommendPage from "../pages/RecommendPage";
+import ProfileModifyPage from "../pages/ProfileModifyPage"
+import WithdrawPage from "../pages/WithdrawPage"
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <RootLayout/>,
-        errorElement: <h1>에러 페이지</h1>,
         children:[
             {
                 index:true,
@@ -30,12 +33,25 @@ const router = createBrowserRouter([
             },
             {
                 path: 'recommend',
-                element: <h1>추천 편지 페이지</h1>
+                element: <RecommendPage/>
             },
             {
                 path: 'my',
                 element: <MyPage/>
-            }]
+            },
+            {
+                path: 'my/profile',
+                element: <ProfileModifyPage/>
+            },
+            {
+                path: 'withdraw',
+                element: <WithdrawPage/>
+            },
+            {
+                path: '*',
+                element: <NotFound/>
+            }
+        ]
     }
 ])
 
