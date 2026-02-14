@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
-const RoundWhiteButton = ({text, width, onClick}) => {
+const SquareGreenLongButton = ({text, width, onClick}) => {
     return (
         <>
             <Button width={width} onClick={onClick}>{text}</Button>
         </>
     )
 }
-export default RoundWhiteButton;
+export default SquareGreenLongButton;
 
 const Button = styled.button`
     width: ${props => props.width || '230px'};

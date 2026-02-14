@@ -13,7 +13,7 @@ const Navbar = ({title, mypage, none, backNone}) =>{
         <Container>
             {!backNone && <IconPosition onClick={handleGoBack}><BackIcon/></IconPosition>}
             <Title>{title}</Title>
-            {mypage && !none && <IconPosition2 onClick={()=>navigate("/mypage")}><MyPageIcon/></IconPosition2>}
+            {mypage && !none && <IconPosition2 onClick={()=>navigate("/my")}><MyPageIcon/></IconPosition2>}
             {!mypage && !none && <IconPosition2 onClick={()=>navigate("/home")}><HomeIcon/></IconPosition2>}
         </Container>
     )

@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
-const RoundWhiteButton = ({text, onClick, width}) => {
+const RoundGreenButton = ({text, onClick, width}) => {
     return (
         <>
             <Button onClick={onClick} width={width}>{text}</Button>
         </>
     )
 }
-export default RoundWhiteButton;
+export default RoundGreenButton;
 
 const Button = styled.button`
     width: ${props => props.width || "100%"};
