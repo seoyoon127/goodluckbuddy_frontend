@@ -10,8 +10,8 @@ const SquareGreenButton = ({text, onClick}) => {
 export default SquareGreenButton;
 
 const Button = styled.button`
-    font-size: 12px;
-    padding: 5px 10px;
+    font-size: 14px;
+    padding: 5px 15px;
     border-radius: 5px;
 
     color: white;
