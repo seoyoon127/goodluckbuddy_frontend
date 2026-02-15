@@ -1,7 +1,12 @@
 const validate = ({ nickname, gender, year, month, day, category }) => {
     let newErrors = {};
 
-    if (!nickname) newErrors.nickname = "닉네임을 입력해주세요";
+    if (!nickname) {
+        newErrors.nickname = "닉네임을 입력해주세요";
+    } else if (nickname.length > 10) {
+        newErrors.nickname = "닉네임은 10글자 이하여야 합니다";
+    }
+
     if (!gender) newErrors.gender = "성별을 선택해주세요";
 
     if (year === "년" || month === "월" || day === "일")

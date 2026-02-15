@@ -13,13 +13,21 @@ import PreviewSkyblue from "../assets/letter/preview_skyblue.png";
 import SquareGreenButton from "../components/button/SquareGreenButton";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import validate from "../validate/validateLetter";
+import InvalidText from "../components/text/InvalidText";
 
 
 const LetterWrite2Page = () => {
     const [title, setTitle] = useState("");
     const [selected, setSelected] = useState("GREEN");
     const [src, setSrc] = useState(LetterGreen);
-    const [value, setValue] = useState("");
+    const [content, setContent] = useState("");
+
+    const [errors, setErrors] = useState({
+            title: "",
+            content: ""
+    });
+
     const navigate = useNavigate();
     const handleLetterDesign = (state) => {
         setSelected(state);
@@ -34,9 +42,19 @@ const LetterWrite2Page = () => {
         }
     }
     const handleNext = () => {
-        // 저장 로직
-        navigate("/home");
+        const { isValid, errors } = validate({
+            title,
+            content
+        });
+
+        setErrors(errors);
+
+        if (isValid) {
+            // 저장 로직
+            navigate("/home");
+        }
     }
+
     return (
         <>
             <Navbar title={"편지 쓰기"} mypage={true}/>
@@ -45,11 +63,17 @@ const LetterWrite2Page = () => {
                     <SubTitle textE={"편지 제목"}/>
                 </ContentsWrapper>
                <GreenBorderInput value={title} onChange={(e)=>setTitle(e.target.value)}/>
+                <ErrorSlot>
+                    <InvalidText text={errors.title} />
+                </ErrorSlot>
                <LetterContainer>
                     <LetterImg src={src}/>
-                    <ContentInput value={value} onChange={(e)=>setValue(e.target.value.slice(0, 200))} maxLength={200}/>
-                    <TextLength>{value.length}/200</TextLength>
+                    <ContentInput value={content} onChange={(e)=>setContent(e.target.value.slice(0, 200))} maxLength={200}/>
+                    <TextLength>{content.length}/200</TextLength>
                 </LetterContainer>
+                <ErrorSlot>
+                    <InvalidText text={errors.content} />
+                </ErrorSlot>
                 <ContentsWrapper>
                     <SubTitle textE={"편지지 디자인"}/>
                 </ContentsWrapper>
@@ -89,8 +113,6 @@ const LetterContainer = styled.div`
     position: relative;
     width: 300px;
     height: 400px;
-    margin-top: 30px;
-    margin-bottom: 20px;
 `;
 
 const LetterImg = styled.img`
@@ -133,4 +155,12 @@ const TextLength = styled.div`
     right: 55px;
     bottom: 65px;
     color: #A3A6A2;
+`;
+
+const ErrorSlot = styled.div`
+    height: 18px;
+    width: 80%;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
 `;
