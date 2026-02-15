@@ -10,6 +10,8 @@ import RecommendPage from "../pages/RecommendPage";
 import ProfileModifyPage from "../pages/ProfileModifyPage";
 import WithdrawPage from "../pages/WithdrawPage";
 import MyLikesPage from "../pages/MyLikesPage";
+import MyLetterPage from "../pages/MyLetterPage";
+import MyReplyPage from "../pages/MyReplyPage";
 
 const router = createBrowserRouter([
     {
@@ -51,6 +53,14 @@ const router = createBrowserRouter([
             {
                 path: 'my/likes',
                 element: <MyLikesPage/>
+            },
+            {
+                path: 'my/letter',
+                element: <MyLetterPage/>
+            },
+            {
+                path: 'my/reply',
+                element: <MyReplyPage/>
             },
             {
                 path: '*',
