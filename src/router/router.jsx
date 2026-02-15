@@ -7,8 +7,9 @@ import LoginPage from "../pages/LoginPage";
 import SignupPage from "../pages/SignupPage";
 import NotFound from "../pages/NotFound";
 import RecommendPage from "../pages/RecommendPage";
-import ProfileModifyPage from "../pages/ProfileModifyPage"
-import WithdrawPage from "../pages/WithdrawPage"
+import ProfileModifyPage from "../pages/ProfileModifyPage";
+import WithdrawPage from "../pages/WithdrawPage";
+import MyLikesPage from "../pages/MyLikesPage";
 
 const router = createBrowserRouter([
     {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
             {
                 path: 'withdraw',
                 element: <WithdrawPage/>
+            },
+            {
+                path: 'my/likes',
+                element: <MyLikesPage/>
             },
             {
                 path: '*',
