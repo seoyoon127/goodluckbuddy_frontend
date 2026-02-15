@@ -12,15 +12,16 @@ import PreviewPurple from "../assets/letter/preview_purple.png";
 import PreviewSkyblue from "../assets/letter/preview_skyblue.png";
 import SquareGreenButton from "../components/button/SquareGreenButton";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
-const LetterWrite2Page = () => {
+const LetterModifyPage = () => {
     const [title, setTitle] = useState("");
     const [selected, setSelected] = useState("GREEN");
     const [src, setSrc] = useState(LetterGreen);
     const [value, setValue] = useState("");
     const navigate = useNavigate();
+
     const handleLetterDesign = (state) => {
         setSelected(state);
         if (state == "GREEN"){
@@ -33,13 +34,37 @@ const LetterWrite2Page = () => {
             setSrc(LetterPurple)
         }
     }
+
+    const letter = {
+        title: "제목제목",
+        content: "내용내용내용",
+        letterDesign: "GREEN"
+    };
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+
+            setTitle(letter.title);
+            setValue(letter.content)
+            setSelected(letter.letterDesign);
+        };
+
+        fetchProfile();
+    }, []);
+
     const handleNext = () => {
-        // 저장 로직
+        if (letter.title == title && letter.content == value && letter.letterDesign == selected) {
+            alert("변경사항이 없습니다.")
+        } else{
+            // 저장 로직
+            alert("변경사항이 저장되었습니다.")
+        }
         navigate("/home");
     }
+
     return (
         <>
-            <Navbar title={"편지 쓰기"} mypage={true}/>
+            <Navbar title={"편지 수정"} mypage={true}/>
             <Wrapper>
                 <ContentsWrapper>
                     <SubTitle textE={"편지 제목"}/>
@@ -67,7 +92,7 @@ const LetterWrite2Page = () => {
     )
 }
 
-export default LetterWrite2Page;
+export default LetterModifyPage;
 
 const Wrapper = styled.div`
     display: flex;

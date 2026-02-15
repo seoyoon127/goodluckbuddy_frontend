@@ -17,6 +17,7 @@ import UserLetterPage from "../pages/UserLetterPage";
 import UserReplyPage from "../pages/UserReplyPage";
 import LetterWrite1Page from "../pages/LetterWrite1Page";
 import LetterWrite2Page from "../pages/LetterWrite2Page";
+import LetterModifyPage from "../pages/LetterMofifyPage";
 
 const router = createBrowserRouter([
     {
@@ -86,6 +87,10 @@ const router = createBrowserRouter([
             {
                 path: 'letter/write',
                 element: <LetterWrite2Page/>
+            },
+            {
+                path: 'letter/modify',
+                element: <LetterModifyPage/>
             },
             {
                 path: '*',
