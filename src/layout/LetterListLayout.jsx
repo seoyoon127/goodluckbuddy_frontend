@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Navbar from "../components/navbar/navbar";
 import DropdownMenu from "../components/menu/DropdownMenu"
 import categories from "../data/categories"
 import { useState} from "react";
