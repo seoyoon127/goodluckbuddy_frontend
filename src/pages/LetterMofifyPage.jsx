@@ -13,14 +13,21 @@ import PreviewSkyblue from "../assets/letter/preview_skyblue.png";
 import SquareGreenButton from "../components/button/SquareGreenButton";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import InvalidText from "../components/text/InvalidText";
+import validate from "../validate/validateLetter";
 
 
 const LetterModifyPage = () => {
     const [title, setTitle] = useState("");
     const [selected, setSelected] = useState("GREEN");
     const [src, setSrc] = useState(LetterGreen);
-    const [value, setValue] = useState("");
+    const [content, setContent] = useState("");
     const navigate = useNavigate();
+
+    const [errors, setErrors] = useState({
+        title: "",
+        content: ""
+    });
 
     const handleLetterDesign = (state) => {
         setSelected(state);
@@ -45,7 +52,7 @@ const LetterModifyPage = () => {
         const fetchProfile = async () => {
 
             setTitle(letter.title);
-            setValue(letter.content)
+            setContent(letter.content);
             setSelected(letter.letterDesign);
         };
 
@@ -53,13 +60,23 @@ const LetterModifyPage = () => {
     }, []);
 
     const handleNext = () => {
-        if (letter.title == title && letter.content == value && letter.letterDesign == selected) {
-            alert("변경사항이 없습니다.")
-        } else{
-            // 저장 로직
-            alert("변경사항이 저장되었습니다.")
+        const { isValid, errors } = validate({
+            title,
+            content
+        });
+
+        setErrors(errors);
+
+        if (isValid) {
+            if (letter.title == title && letter.content == content && letter.letterDesign == selected) {
+                alert("변경사항이 없습니다.")
+            } else{
+                validate()
+                // 저장 로직
+                alert("변경사항이 저장되었습니다.")
+            }
+            navigate("/home");
         }
-        navigate("/home");
     }
 
     return (
@@ -70,11 +87,17 @@ const LetterModifyPage = () => {
                     <SubTitle textE={"편지 제목"}/>
                 </ContentsWrapper>
                <GreenBorderInput value={title} onChange={(e)=>setTitle(e.target.value)}/>
+                <ErrorSlot>
+                    <InvalidText text={errors.title} />
+                </ErrorSlot>
                <LetterContainer>
                     <LetterImg src={src}/>
-                    <ContentInput value={value} onChange={(e)=>setValue(e.target.value.slice(0, 200))} maxLength={200}/>
-                    <TextLength>{value.length}/200</TextLength>
+                    <ContentInput value={content} onChange={(e)=>setContent(e.target.value.slice(0, 200))} maxLength={200}/>
+                    <TextLength>{content.length}/200</TextLength>
                 </LetterContainer>
+                <ErrorSlot>
+                    <InvalidText text={errors.content} />
+                </ErrorSlot>
                 <ContentsWrapper>
                     <SubTitle textE={"편지지 디자인"}/>
                 </ContentsWrapper>
@@ -105,7 +128,6 @@ const Wrapper = styled.div`
 const ContentsWrapper = styled.div`
     width: 80%;
     display: flex;
-    align-items: ;
     gap: 20px;
     margin-bottom: 10px;
 `;
@@ -114,8 +136,6 @@ const LetterContainer = styled.div`
     position: relative;
     width: 300px;
     height: 400px;
-    margin-top: 30px;
-    margin-bottom: 20px;
 `;
 
 const LetterImg = styled.img`
@@ -158,4 +178,12 @@ const TextLength = styled.div`
     right: 55px;
     bottom: 65px;
     color: #A3A6A2;
+`;
+
+const ErrorSlot = styled.div`
+    height: 18px;
+    width: 80%;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
 `;
