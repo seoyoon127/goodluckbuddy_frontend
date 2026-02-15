@@ -15,7 +15,7 @@ const MyPage = () => {
         <>
             <Navbar title={"마이페이지"} mypage={false}/>
             <Wrapper>
-                <ProfileBlock nickname={"닉네임"} gender={"여성"} ageGroup={"20대"} interest={"가족"} onClick={()=>navigate("/my/profile")}/>
+                <ProfileBlock nickname={"닉네임"} gender={"여성"} ageGroup={"20대"} interest={"가족"} my={true} onClick={()=>navigate("/my/profile")}/>
                 <ContentWrapper>
                     <TextWrapper><SubTitle textE={"내 활동"}/></TextWrapper>
                     <SquareGreenLongButton text={"좋아요한 편지 보기"} width="250px" onClick={()=>navigate("/my/likes")}/>
