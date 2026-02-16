@@ -11,6 +11,7 @@ import PreviewPink from "../assets/letter/preview_pink.png";
 import PreviewPurple from "../assets/letter/preview_purple.png";
 import PreviewSkyblue from "../assets/letter/preview_skyblue.png";
 import SquareGreenButton from "../components/button/SquareGreenButton";
+import RoundWhiteButton from "../components/button/RoundWhiteButton";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import InvalidText from "../components/text/InvalidText";
@@ -108,6 +109,9 @@ const LetterModifyPage = () => {
                     <PreviewImg src={PreviewPurple} selected={selected=="PURPLE"} onClick={()=>handleLetterDesign("PURPLE")}/>
                 </ContentsWrapper>
             </Wrapper>
+            <ButtonPositionLeft>
+                <RoundWhiteButton text={"카테고리 수정"} onClick={()=>navigate("/category/modify")}/>
+            </ButtonPositionLeft>
             <ButtonPosition>
                 <SquareGreenButton text={"다음"} onClick={handleNext}/>
             </ButtonPosition>
@@ -155,6 +159,12 @@ const PreviewImg = styled.img`
 const ButtonPosition = styled.div`
     position: absolute;
     right: 20px;
+    bottom: 30px;
+`;
+
+const ButtonPositionLeft = styled.div`
+    position: absolute;
+    left: 20px;
     bottom: 30px;
 `;
 
