@@ -1,22 +1,22 @@
 import styled from "styled-components";
 
-const RoundGreenButton = ({text, onClick, width}) => {
+const RoundButton = ({text, onClick, selected}) => {
     return (
         <>
-            <Button onClick={onClick} width={width}>{text}</Button>
+            <Button onClick={onClick} selected={selected}>{text}</Button>
         </>
     )
 }
-export default RoundGreenButton;
+export default RoundButton;
 
 const Button = styled.button`
     font-size: 12px;
     padding: 5px 10px;
     border-radius: 20px;
 
-    color: white;
-    border: 1px solid #68AB46;
-    background-color: #68AB46;
+    border: 1px solid ${props => props.selected ?  "#68AB46": "#ABAAAA"};
+    color: ${props => props.selected ?  "#68AB46": "#ABAAAA"};
+    background-color: white;
 
     cursor: pointer;
 
