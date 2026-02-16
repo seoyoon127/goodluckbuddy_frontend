@@ -18,7 +18,7 @@ import InvalidText from "../components/text/InvalidText";
 import validate from "../validate/validateLetter";
 
 
-const LetterModifyPage = () => {
+const LetterModify1Page = () => {
     const [title, setTitle] = useState("");
     const [selected, setSelected] = useState("GREEN");
     const [src, setSrc] = useState(LetterGreen);
@@ -50,14 +50,14 @@ const LetterModifyPage = () => {
     };
 
     useEffect(() => {
-        const fetchProfile = async () => {
+        const fetchLetter = async () => {
 
             setTitle(letter.title);
             setContent(letter.content);
             setSelected(letter.letterDesign);
         };
 
-        fetchProfile();
+        fetchLetter();
     }, []);
 
     const handleNext = () => {
@@ -119,7 +119,7 @@ const LetterModifyPage = () => {
     )
 }
 
-export default LetterModifyPage;
+export default LetterModify1Page;
 
 const Wrapper = styled.div`
     display: flex;

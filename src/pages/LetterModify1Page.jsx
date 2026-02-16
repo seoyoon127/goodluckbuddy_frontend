@@ -11,7 +11,7 @@ import RoundButton from "../components/button/RoundButton";
 import SquareGreenButton from "../components/button/SquareGreenButton";
 import { useNavigate } from "react-router-dom";
 
-const LetterWrite1Page = () => {
+const LetterModify1Page = () => {
     const [category, setCategory] = useState("전체");
     const [selectedInfos, setSelectedInfos] = useState([]);
 
@@ -89,7 +89,7 @@ const LetterWrite1Page = () => {
     )
 }
 
-export default LetterWrite1Page;
+export default LetterModify1Page;
 
 const Wrapper = styled.div`
     display: flex;
