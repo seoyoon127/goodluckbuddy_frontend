@@ -10,7 +10,6 @@ const RoundGreenButton = ({text, onClick, width}) => {
 export default RoundGreenButton;
 
 const Button = styled.button`
-    width: ${props => props.width || "100%"};
     font-size: 12px;
     padding: 5px 10px;
     border-radius: 20px;

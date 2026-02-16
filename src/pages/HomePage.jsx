@@ -35,6 +35,7 @@ const HomePage = () => {
                         </SortWrapper>
                     </ContentsWrapper>
                     <PreviewBlock 
+                        id={1}
                         title={"제목제목제목"} 
                         content={"내용내용내용내용내용내용내용내용내용내용내용내용조금만더쓰면된다아아아아아라라라랄"}
                         nickname={"닉네임"}
