@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import Title from "../text/Title";
 import RoundGreenButton from "../button/RoundGreenButton";
+import { useNavigate } from "react-router-dom";
 
-const PreviewBlock = ({title, content, nickname, date, likeCount, category}) => {
+const PreviewBlock = ({id, title, content, nickname, date, likeCount, category}) => {
+    const navigate = useNavigate();
     return (
         <>
-            <Block>
+            <Block onClick={()=>navigate(`/letter/${id}`)}>
                 <TextWrapper><Title text={title}/></TextWrapper>
                 <Content>{content}</Content>
                 <PreviewWrapper>

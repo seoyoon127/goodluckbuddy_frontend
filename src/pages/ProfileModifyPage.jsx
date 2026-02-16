@@ -52,6 +52,30 @@ const ProfileModifyPage = () => {
         fetchProfile();
     }, []);
 
+    const handleSave = () => {
+        const { isValid, errors } = validate({
+            nickname,
+            gender,
+            year,
+            month,
+            day,
+            category
+        });
+
+        setErrors(errors);
+
+        const birth = year + "-" + month + "-" + day
+
+        if (isValid) {
+            if (nickname == profile.nickname && gender == profile.gender && birth == profile.birth && category == profile.category){
+                alert("변경사항이 없습니다.")
+            }
+            else {
+                    alert("변경사항이 저장되었습니다.")
+            }
+        }
+    }
+
     return (
         <>
             <Navbar title={"회원정보 수정"} none={true}/>
@@ -106,29 +130,7 @@ const ProfileModifyPage = () => {
                     </ErrorSlot>
                 </InputWrapper>
                 <Button text={"변경사항 저장"}  
-                onClick={() => {
-                    const { isValid, errors } = validate({
-                        nickname,
-                        gender,
-                        year,
-                        month,
-                        day,
-                        category
-                    });
-
-                    setErrors(errors);
-
-                    const birth = year + "-" + month + "-" + day
-
-                    if (isValid) {
-                        if (nickname == profile.nickname && gender == profile.gender && birth == profile.birth && category == profile.category){
-                            alert("변경사항이 없습니다.")
-                        }
-                        else {
-                             alert("변경사항이 저장되었습니다.")
-                        }
-                    }
-                }}/>
+                onClick={handleSave}/>
             </Wrapper>
         </>
     )

@@ -15,44 +15,54 @@ const HomePage = () => {
     const navigate = useNavigate();
     return (
         <>
-            <LogoNavbar mypage={false}/>
-            <Wrapper>
-                <RecommendBlock nickname={"닉네임"} onClick={()=>navigate("/recommend")}/>
-                <ContentsWrapper>
-                    <Title text={"편지 보기"}/>
-                    <SortWrapper>
-                        <DropdownMenu
-                            menus={categories}
-                            selected={category}
-                            onSelect={setCategory}
-                        />
-                        <DropdownMenu
-                            menus={sorts}
-                            selected={sort}
-                            onSelect={setSort}
-                        />
-                    </SortWrapper>
-                </ContentsWrapper>
-                <PreviewBlock 
-                    title={"제목제목제목"} 
-                    content={"내용내용내용내용내용내용내용내용내용내용내용내용조금만더쓰면된다아아아아아라라라랄"}
-                    nickname={"닉네임"}
-                    date={"2025-12-27"}
-                    likeCount={10}
-                    category={"가족"}/>
-            </Wrapper>
+            <Page>
+                <LogoNavbar mypage={false}/>
+                <Wrapper>
+                    <RecommendBlock nickname={"닉네임"} onClick={()=>navigate("/recommend")}/>
+                    <ContentsWrapper>
+                        <Title text={"편지 보기"}/>
+                        <SortWrapper>
+                            <DropdownMenu
+                                menus={categories}
+                                selected={category}
+                                onSelect={setCategory}
+                            />
+                            <DropdownMenu
+                                menus={sorts}
+                                selected={sort}
+                                onSelect={setSort}
+                            />
+                        </SortWrapper>
+                    </ContentsWrapper>
+                    <PreviewBlock 
+                        id={1}
+                        title={"제목제목제목"} 
+                        content={"내용내용내용내용내용내용내용내용내용내용내용내용조금만더쓰면된다아아아아아라라라랄"}
+                        nickname={"닉네임"}
+                        date={"2025-12-27"}
+                        likeCount={10}
+                        category={"가족"}/>
+                </Wrapper>
+            </Page>
         </>
     )
 }
 export default HomePage
 
+const Page = styled.div`
+    min-height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+`;
+
 const Wrapper = styled.div`
+    flex: 1;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
     margin-bottom: 20px;
-    overflow-y: auto;
 `;
 
 const ContentsWrapper = styled.div`

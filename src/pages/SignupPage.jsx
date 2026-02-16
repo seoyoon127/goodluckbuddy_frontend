@@ -31,6 +31,23 @@ const MyPage = () => {
 
     const navigate = useNavigate();
 
+    const handleSave = () => {
+        const { isValid, errors } = validate({
+            nickname,
+            gender,
+            year,
+            month,
+            day,
+            category
+        });
+
+        setErrors(errors);
+
+        if (isValid) {
+            navigate("/home");
+        }
+    }
+
     return (
         <>
             <Navbar title={"회원가입"} backNone={true} none={true}/>
@@ -85,22 +102,7 @@ const MyPage = () => {
                     </ErrorSlot>
                 </InputWrapper>
                 <Button text={"회원가입 하기"}  
-                onClick={() => {
-                    const { isValid, errors } = validate({
-                        nickname,
-                        gender,
-                        year,
-                        month,
-                        day,
-                        category
-                    });
-
-                    setErrors(errors);
-
-                    if (isValid) {
-                        navigate("/home");
-                    }
-                }}/>
+                onClick={handleSave}/>
             </Wrapper>
         </>
     )
