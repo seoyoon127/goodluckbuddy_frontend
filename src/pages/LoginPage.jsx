@@ -4,15 +4,22 @@ import Title from "../components/text/Title"
 import BirdHappySrc from "../assets/bird_happy.png"
 import KakaoButtonSrc from "../assets/kakao_button.png"
 import GoogleButtonSrc from "../assets/google_button.png"
+import { useSearchParams } from "react-router-dom"
 
 const LoginPage = () => {
     const OAUTH_BASE = import.meta.env.VITE_API_BASE_URL;
+    const [searchParams] = useSearchParams();
+    const redirect = searchParams.get("redirect") || "/";
+    console.log("redirect:", redirect); 
+    
     const handleKakaoLogin = () => {
-        window.location.href = `${OAUTH_BASE}/oauth2/authorization/kakao`;
+        const encodedRedirect = encodeURIComponent(redirect);
+        window.location.href = `${OAUTH_BASE}/oauth2/authorization/kakao?redirect=${encodedRedirect}`;
     };
 
     const handleGoogleLogin = () => {
-        window.location.href = `${OAUTH_BASE}/oauth2/authorization/google`;
+        const encodedRedirect = encodeURIComponent(redirect);
+        window.location.href = `${OAUTH_BASE}/oauth2/authorization/google?redirect=${encodedRedirect}`;
     };
     return (
         <>
