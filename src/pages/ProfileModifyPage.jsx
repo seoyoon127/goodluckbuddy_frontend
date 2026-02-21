@@ -13,6 +13,8 @@ import Button from "../components/button/SquareGreenLongButton"
 import InvalidText from "../components/text/InvalidText";
 import validate from "../validate/validateProfile";
 import usePostNicknameDuplicate from "../apis/usePostNicknameDuplicate";
+import usePatchUser from "../apis/usePatchUser";
+import categoryInEnglish from "../data/categoryInEnglish";
 
 const ProfileModifyPage = () => {
     const [nickname, setNickname] = useState("");
@@ -30,6 +32,7 @@ const ProfileModifyPage = () => {
     });
 
     const { mutate:postNicknameDuplicate } = usePostNicknameDuplicate(setErrors);
+    const { mutate:patchUser } = usePatchUser();
 
     const handleNicknameDuplicate = () => {
         postNicknameDuplicate(nickname);
@@ -70,15 +73,25 @@ const ProfileModifyPage = () => {
         });
 
         setErrors(errors);
+        handleNicknameDuplicate();
 
-        const birth = year + "-" + month + "-" + day
+        const birth = year + "-" + (month.length < 2 ? "0" + month : month)  + "-" + (day.length < 2 ? "0" + day : day);
+        const categoryEng = categoryInEnglish(category);
+
+        const profile = {
+            nickname: nickname,
+            gender: gender,
+            birth: birth,
+            category: categoryEng
+        }
 
         if (isValid) {
             if (nickname == profile.nickname && gender == profile.gender && birth == profile.birth && category == profile.category){
                 alert("변경사항이 없습니다.")
             }
             else {
-                    alert("변경사항이 저장되었습니다.")
+                patchUser(profile);
+                alert("변경사항이 저장되었습니다.")
             }
         }
     }
