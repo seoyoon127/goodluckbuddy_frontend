@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-const InvalidText = ({text}) => {
+const InvalidText = ({text, valid}) => {
     return (
         <>
-            <Title>{text}</Title>
+            <Title valid={valid}>{text}</Title>
         </>
     )
 }
@@ -11,6 +11,6 @@ export default InvalidText;
 
 const Title = styled.span`
     font-size:14px;
-    color:red;
+    color: ${props => props.valid ?  "blue" : "red"};
     position:relative;
 `;

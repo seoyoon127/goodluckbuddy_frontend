@@ -12,7 +12,7 @@ const usePostNicknameDuplicate = (setErrors) => {
         onSuccess: () => {
             setErrors(prev => ({
                 ...prev,
-                nickname: ""
+                nickname: "사용 가능한 닉네임입니다."
             }));
         },
         onError: (error) => {

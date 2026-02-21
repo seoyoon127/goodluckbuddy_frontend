@@ -34,7 +34,7 @@ const MyPage = () => {
         birth: "",
         category: ""
     });
-    
+
     const { mutate:postNicknameDuplicate } = usePostNicknameDuplicate(setErrors);
 
     useEffect(() => {
@@ -78,7 +78,7 @@ const MyPage = () => {
                         onClick={handleNicknameDuplicate}
                         onChange={(e) => setNickname(e.target.value)}/>
                     <ErrorSlot>
-                        <InvalidText text={errors.nickname} />
+                        <InvalidText text={errors.nickname} valid={errors.nickname.includes("사용 가능")}/>
                     </ErrorSlot>
                     <TextWrapper><SubTitle textE={"성별"}/></TextWrapper>
                     <RadioGroup>
