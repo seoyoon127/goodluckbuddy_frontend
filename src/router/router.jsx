@@ -20,6 +20,7 @@ import LetterWrite2Page from "../pages/LetterWrite2Page";
 import LetterModify1Page from "../pages/LetterModify1Page";
 import LetterModify2Page from "../pages/LetterModify2Page";
 import LetterDetailPage from "../pages/LetterDetailPage";
+import ProtectedRoute from "./ProtectedRoute";
 
 const router = createBrowserRouter([
     {
@@ -44,31 +45,31 @@ const router = createBrowserRouter([
             },
             {
                 path: 'recommend',
-                element: <RecommendPage/>
+                element: <ProtectedRoute><RecommendPage/></ProtectedRoute>
             },
             {
                 path: 'my',
-                element: <MyPage/>
+                element: <ProtectedRoute><MyPage/></ProtectedRoute>
             },
             {
                 path: 'my/profile',
-                element: <ProfileModifyPage/>
+                element: <ProtectedRoute><ProfileModifyPage/></ProtectedRoute>
             },
             {
                 path: 'withdraw',
-                element: <WithdrawPage/>
+                element: <ProtectedRoute><WithdrawPage/></ProtectedRoute>
             },
             {
                 path: 'my/likes',
-                element: <MyLikesPage/>
+                element: <ProtectedRoute><MyLikesPage/></ProtectedRoute>
             },
             {
                 path: 'my/letter',
-                element: <MyLetterPage/>
+                element: <ProtectedRoute><MyLetterPage/></ProtectedRoute>
             },
             {
                 path: 'my/reply',
-                element: <MyReplyPage/>
+                element: <ProtectedRoute><MyReplyPage/></ProtectedRoute>
             },
             {
                 path: 'user/:id',
@@ -84,19 +85,19 @@ const router = createBrowserRouter([
             },
             {
                 path: 'letter/category',
-                element: <LetterWrite1Page/>
+                element: <ProtectedRoute><LetterWrite1Page/></ProtectedRoute>
             },
             {
                 path: 'letter/write',
-                element: <LetterWrite2Page/>
+                element: <ProtectedRoute><LetterWrite2Page/></ProtectedRoute>
             },
             {
                 path: 'category/modify',
-                element: <LetterModify1Page/>
+                element: <ProtectedRoute><LetterModify1Page/></ProtectedRoute>
             },
             {
                 path: 'letter/:id/modify',
-                element: <LetterModify2Page/>
+                element: <ProtectedRoute><LetterModify2Page/></ProtectedRoute>
             },
             {
                 path: 'letter/:id',

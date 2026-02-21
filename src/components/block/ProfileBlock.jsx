@@ -6,7 +6,7 @@ import ProfileTitle from "../text/ProfileTitle";
 const ProfileBlock = ({nickname, gender, ageGroup, interest, onClick, my}) => {
     return (
         <>
-            <Block onClick={onClick} my={my}>
+            <Block onClick={onClick} $my={my}>
                 <Wrapper> 
                     <Image src={IconSrc} alt="icon"/>
                     <ProfileTitle textGreen={nickname} text={`\n${gender}/${ageGroup}/관심분야:${interest}`}/>
@@ -22,7 +22,7 @@ export default ProfileBlock;
 
 const Block = styled.div`
     width: 300px;
-    height: ${props => props.my ? "100px" : "70px"};
+    height: ${({ $my }) => ($my ? "100px" : "70px")};
     background: #BEE9A8;
     border-radius: 5px;
     display:flex;

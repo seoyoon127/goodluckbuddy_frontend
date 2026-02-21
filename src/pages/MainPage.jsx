@@ -22,7 +22,7 @@ const MainPage = () => {
                 />
                 <ButtonWrapper>
                     <Button text={"편지 보러 가기"} onClick={()=>navigate("/home")}/>   
-                    <Button text={"편지 쓰러 가기"} onClick={()=>navigate("/login",{state: { from: "main" }})}/>   
+                    <Button text={"편지 쓰러 가기"} onClick={()=>navigate("/letter/category")}/>   
                 </ButtonWrapper>
             </Wrapper>
         </>
