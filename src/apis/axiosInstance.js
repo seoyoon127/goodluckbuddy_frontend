@@ -21,5 +21,44 @@ axiosInstance.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
+axiosInstance.interceptors.response.use(
+    (response) => response,
+
+    async (error) => {
+        const originalRequest = error.config;
+
+        // 401 아니면 그냥 에러 반환
+        if (error.response?.status !== 401) {
+            return Promise.reject(error);
+        }
+        console.log("401")
+
+        // 재발급 요청 자체가 실패한 경우 무한루프 방지
+        if (originalRequest._retry) {
+            return Promise.reject(error);
+        }
+
+        originalRequest._retry = true;
+
+        try {
+            const response = await axiosInstance.post("/api/auth/token/reissue");
+
+            const newAccessToken = response.data.accessToken;
+            useAuthStore.getState().setAccessToken(newAccessToken);
+
+            // 헤더 갱신
+            originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+            // 원래 요청 재시도
+            return axiosInstance(originalRequest);
+
+        } catch (reissueError) {
+            console.error("토큰 재발급 실패", reissueError);
+            useAuthStore.getState().logout();
+
+            return Promise.reject(reissueError);
+        }
+    }
+);
 
 export default axiosInstance;
