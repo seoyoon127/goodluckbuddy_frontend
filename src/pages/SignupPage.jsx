@@ -14,9 +14,10 @@ import InvalidText from "../components/text/InvalidText";
 import validate from "../validate/validateProfile";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useAuthStore from "../store/useAuthStore";
+import usePostNicknameDuplicate from "../apis/usePostNicknameDuplicate";
 
 const MyPage = () => {
-    const [nickname, setNickname] = useState(null);
+    const [nickname, setNickname] = useState("");
     const [gender, setGender] = useState(null);
     const [year, setYear] = useState("년");
     const [month, setMonth] = useState("월");
@@ -27,17 +28,23 @@ const MyPage = () => {
     const token = searchParams.get("token");
     const setAccessToken = useAuthStore((state) => state.setAccessToken);
 
-    useEffect(() => {
-        if (!token) return;
-        setAccessToken(token);
-    }, [token]);
-
-    const [errors, setErrors] = useState({
+     const [errors, setErrors] = useState({
         nickname: "",
         gender: "",
         birth: "",
         category: ""
     });
+    
+    const { mutate:postNicknameDuplicate } = usePostNicknameDuplicate(setErrors);
+
+    useEffect(() => {
+        if (!token) return;
+        setAccessToken(token);
+    }, [token]);
+
+    const handleNicknameDuplicate = () => {
+        postNicknameDuplicate(nickname);
+    }
 
     const navigate = useNavigate();
 
@@ -65,7 +72,11 @@ const MyPage = () => {
                 <Title text={"회원 정보를 입력해주세요"}/>
                 <InputWrapper>
                     <TextWrapper><SubTitle textE={"닉네임"}/></TextWrapper>
-                    <BottomLineInput hint={"닉네임을 입력하세요"} value={nickname} onChange={(e) => setNickname(e.target.value)}/>
+                    <BottomLineInput 
+                        hint={"닉네임을 입력하세요"} 
+                        value={nickname} 
+                        onClick={handleNicknameDuplicate}
+                        onChange={(e) => setNickname(e.target.value)}/>
                     <ErrorSlot>
                         <InvalidText text={errors.nickname} />
                     </ErrorSlot>

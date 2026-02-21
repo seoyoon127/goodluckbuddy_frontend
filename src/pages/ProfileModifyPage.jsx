@@ -12,6 +12,7 @@ import days from "../data/days";
 import Button from "../components/button/SquareGreenLongButton"
 import InvalidText from "../components/text/InvalidText";
 import validate from "../validate/validateProfile";
+import usePostNicknameDuplicate from "../apis/usePostNicknameDuplicate";
 
 const ProfileModifyPage = () => {
     const [nickname, setNickname] = useState("");
@@ -27,6 +28,12 @@ const ProfileModifyPage = () => {
         birth: "",
         category: ""
     });
+
+    const { mutate:postNicknameDuplicate } = usePostNicknameDuplicate(setErrors);
+
+    const handleNicknameDuplicate = () => {
+        postNicknameDuplicate(nickname);
+    }
 
     const profile = {
         nickname: "닉네임",
@@ -83,7 +90,11 @@ const ProfileModifyPage = () => {
                 <Title text={"회원 정보를 입력해주세요"}/>
                 <InputWrapper>
                     <TextWrapper><SubTitle textE={"닉네임"}/></TextWrapper>
-                    <BottomLineInput hint={"닉네임을 입력하세요"} value={nickname} onChange={(e) => setNickname(e.target.value)}/>
+                    <BottomLineInput 
+                        hint={"닉네임을 입력하세요"} 
+                        value={nickname} 
+                        onClick={handleNicknameDuplicate}
+                        onChange={(e) => setNickname(e.target.value)}/>
                     <ErrorSlot>
                         <InvalidText text={errors.nickname} />
                     </ErrorSlot>
