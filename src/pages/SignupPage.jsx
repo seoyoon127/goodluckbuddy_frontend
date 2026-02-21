@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { useState} from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/navbar/navbar"
 import Title from "../components/text/Title"
 import SubTitle from "../components/text/SubTitle"
@@ -12,7 +12,8 @@ import days from "../data/days";
 import Button from "../components/button/SquareGreenLongButton"
 import InvalidText from "../components/text/InvalidText";
 import validate from "../validate/validateProfile";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import useAuthStore from "../store/useAuthStore";
 
 const MyPage = () => {
     const [nickname, setNickname] = useState(null);
@@ -21,6 +22,15 @@ const MyPage = () => {
     const [month, setMonth] = useState("월");
     const [day, setDay] = useState("일");
     const [category, setCategory] = useState("카테고리");
+
+    const [searchParams] = useSearchParams();
+    const token = searchParams.get("token");
+    const setAccessToken = useAuthStore((state) => state.setAccessToken);
+
+    useEffect(() => {
+        if (!token) return;
+        setAccessToken(token);
+    }, [token]);
 
     const [errors, setErrors] = useState({
         nickname: "",

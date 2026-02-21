@@ -3,13 +3,24 @@ import LogoNavbar from "../components/navbar/LogoNavbar"
 import Title from "../components/text/Title"
 import DropdownMenu from "../components/menu/DropdownMenu"
 import categories from "../data/categories"
-import { useState} from "react";
+import { useState, useEffect} from "react";
 import sorts from "../data/sorts"
 import PreviewBlock from "../components/block/PreviewBlock"
 import RecommendBlock from "../components/block/RecommendBlock"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
+import useAuthStore from "../store/useAuthStore"
 
 const HomePage = () => {
+    const [searchParams] = useSearchParams();
+    const token = searchParams.get("token");
+    const setAccessToken = useAuthStore((state) => state.setAccessToken);
+    const accessToken = useAuthStore((state) => state.accessToken);
+
+    useEffect(() => {
+        if (!token) return;
+        setAccessToken(token);
+    }, [token]);
+    
     const [category, setCategory] = useState("전체");
     const [sort, setSort] = useState("최신순");
     const navigate = useNavigate();
@@ -18,7 +29,7 @@ const HomePage = () => {
             <Page>
                 <LogoNavbar mypage={false}/>
                 <Wrapper>
-                    <RecommendBlock nickname={"닉네임"} onClick={()=>navigate("/recommend")}/>
+                    { accessToken && <RecommendBlock nickname={"닉네임"} onClick={()=>navigate("/recommend")}/>}
                     <ContentsWrapper>
                         <Title text={"편지 보기"}/>
                         <SortWrapper>
