@@ -31,7 +31,6 @@ axiosInstance.interceptors.response.use(
         if (error.response?.status !== 401) {
             return Promise.reject(error);
         }
-        console.log("401")
 
         // 재발급 요청 자체가 실패한 경우 무한루프 방지
         if (originalRequest._retry) {
