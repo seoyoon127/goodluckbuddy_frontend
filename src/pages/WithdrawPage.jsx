@@ -4,10 +4,12 @@ import Title from "../components/text/Title"
 import BirdSadSrc from "../assets/bird_sad.png"
 import SubTitle from "../components/text/SubTitle"
 import Button from "../components/button/SquareWhiteLongButton"
+import usePatchWithdraw from "../apis/usePatchWithdraw"
 
 const WithdrawPage = () => {
+    const { mutate:withdraw } = usePatchWithdraw();
     const handleWithdraw = () => {
-        // 회원탈퇴 로직
+        withdraw();
     }
     return (
         <>

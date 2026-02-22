@@ -9,7 +9,7 @@ const LogoNavbar = ({mypage, none}) =>{
     return(
         <Container>
             <LogoPosition onClick={()=>navigate("/home")}><LogoImage src={LogoSrc} alt="logo"/></LogoPosition>
-            {mypage && !none && <IconPosition2 onClick={()=>navigate("/mypage")}><MyPageIcon/></IconPosition2>}
+            {mypage && !none && <IconPosition2 onClick={()=>navigate("/my")}><MyPageIcon/></IconPosition2>}
             {!mypage && !none && <IconPosition2 onClick={()=>navigate("/login")}><RoundWhiteButton text="로그인"/></IconPosition2>}
         </Container>
     )
@@ -43,10 +43,7 @@ const LogoImage = styled.img`
 `;
 
 const MyPageIcon = styled(IoPersonOutline)`
-    width:24px;
-    height:24px;
-`;
-const LoginButton = styled`
-    width:24px;
-    height:24px;
+    width:30px;
+    height:30px;
+    color: #000;
 `;
