@@ -10,6 +10,7 @@ import RecommendBlock from "../components/block/RecommendBlock"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import useAuthStore from "../store/useAuthStore"
 import useGetProfile from "../apis/useGetProfile"
+import SquareGreenButton from "../components/button/SquareGreenButton"
 
 const HomePage = () => {
     const [searchParams] = useSearchParams();
@@ -56,7 +57,11 @@ const HomePage = () => {
                         date={"2025-12-27"}
                         likeCount={10}
                         category={"가족"}/>
+                
                 </Wrapper>
+                <ButtonPosition>
+                    <SquareGreenButton text={"편지 쓰러 가기"} onClick={()=>navigate("/letter/category")}/>
+                </ButtonPosition>
             </Page>
         </>
     )
@@ -67,6 +72,7 @@ const Page = styled.div`
     min-height: calc(100vh - 80px);
     display: flex;
     flex-direction: column;
+    position:relative;
 `;
 
 const Wrapper = styled.div`
@@ -76,7 +82,7 @@ const Wrapper = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 100px;
 `;
 
 const ContentsWrapper = styled.div`
@@ -93,4 +99,10 @@ const SortWrapper = styled.div`
     display: flex;
     align-items: center;
     gap:10px;
+`;
+
+const ButtonPosition = styled.div`
+    position: absolute;
+    right: 20px;
+    bottom: 30px;
 `;

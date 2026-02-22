@@ -1,16 +1,16 @@
-const categoryInKorean = (categoryKor) => {
-    if (categoryKor == "FAMILY") {
+const categoryInKorean = (categoryEng) => {
+    if (categoryEng == "FAMILY") {
         return "가족";
-    } else if (categoryKor == "FRIEND") {
+    } else if (categoryEng == "FRIEND") {
         return "친구";
-    } else if (categoryKor == "SENIOR_JUNIOR") {
+    } else if (categoryEng == "SENIOR_JUNIOR") {
         return "선후배";
-    } else if (categoryKor == "SUPERIOR") {
+    } else if (categoryEng == "SUPERIOR") {
         return "상사";
-    } else if (categoryKor == "LOVER") {
+    } else if (categoryEng == "LOVER") {
         return "연인";
     } else {
-        return "INVALID";
+        return "전체";
     }
 }
 
