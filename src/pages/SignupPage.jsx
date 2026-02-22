@@ -12,11 +12,14 @@ import days from "../data/days";
 import Button from "../components/button/SquareGreenLongButton"
 import InvalidText from "../components/text/InvalidText";
 import validate from "../validate/validateProfile";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import useAuthStore from "../store/useAuthStore";
+import usePostNicknameDuplicate from "../apis/usePostNicknameDuplicate";
+import usePatchUser from "../apis/usePatchUser";
+import categoryInEnglish from "../data/categoryInEnglish";
 
 const MyPage = () => {
-    const [nickname, setNickname] = useState(null);
+    const [nickname, setNickname] = useState("");
     const [gender, setGender] = useState(null);
     const [year, setYear] = useState("년");
     const [month, setMonth] = useState("월");
@@ -27,19 +30,24 @@ const MyPage = () => {
     const token = searchParams.get("token");
     const setAccessToken = useAuthStore((state) => state.setAccessToken);
 
-    useEffect(() => {
-        if (!token) return;
-        setAccessToken(token);
-    }, [token]);
-
-    const [errors, setErrors] = useState({
+     const [errors, setErrors] = useState({
         nickname: "",
         gender: "",
         birth: "",
         category: ""
     });
 
-    const navigate = useNavigate();
+    const { mutate:postNicknameDuplicate } = usePostNicknameDuplicate(setErrors);
+    const { mutate:patchUser } = usePatchUser();
+
+    useEffect(() => {
+        if (!token) return;
+        setAccessToken(token);
+    }, [token]);
+
+    const handleNicknameDuplicate = () => {
+        postNicknameDuplicate(nickname);
+    }
 
     const handleSave = () => {
         const { isValid, errors } = validate({
@@ -52,9 +60,19 @@ const MyPage = () => {
         });
 
         setErrors(errors);
+        handleNicknameDuplicate();
 
+        const birth = year + "-" + (month.length < 2 ? "0" + month : month)  + "-" + (day.length < 2 ? "0" + day : day);
+        const categoryEng = categoryInEnglish(category);
+
+        const profile = {
+            nickname: nickname,
+            gender: gender,
+            birth: birth,
+            category: categoryEng
+        }
         if (isValid) {
-            navigate("/home");
+            patchUser(profile);
         }
     }
 
@@ -65,9 +83,13 @@ const MyPage = () => {
                 <Title text={"회원 정보를 입력해주세요"}/>
                 <InputWrapper>
                     <TextWrapper><SubTitle textE={"닉네임"}/></TextWrapper>
-                    <BottomLineInput hint={"닉네임을 입력하세요"} value={nickname} onChange={(e) => setNickname(e.target.value)}/>
+                    <BottomLineInput 
+                        hint={"닉네임을 입력하세요"} 
+                        value={nickname} 
+                        onClick={handleNicknameDuplicate}
+                        onChange={(e) => setNickname(e.target.value)}/>
                     <ErrorSlot>
-                        <InvalidText text={errors.nickname} />
+                        <InvalidText text={errors.nickname} valid={errors.nickname.includes("사용 가능")}/>
                     </ErrorSlot>
                     <TextWrapper><SubTitle textE={"성별"}/></TextWrapper>
                     <RadioGroup>

@@ -6,19 +6,31 @@ import SubTitle from "../components/text/SubTitle"
 import SquareGreenLongButton from "../components/button/SquareGreenLongButton"
 import SquareWhiteLongButton from "../components/button/SquareWhiteLongButton"
 import usePostLogout from "../apis/usePostLogout"
+import useGetProfile from "../apis/useGetProfile"
+import categoryInKorean from "../data/categoryInKorean"
+import LoadingPage from "./LoadingPage"
+import genderInKorean from "../data/genderInKoreaan"
 
 const MyPage = () => {
     const { mutate: postLogout } = usePostLogout();
+    const { data:profile } = useGetProfile();
     const navigate = useNavigate();
     const handleLogout = () => {
-        console.log("click")
         postLogout();
     }
+
+    if (!profile) return <LoadingPage/>
     return (
         <>
             <Navbar title={"마이페이지"} mypage={false}/>
             <Wrapper>
-                <ProfileBlock nickname={"닉네임"} gender={"여성"} ageGroup={"20대"} interest={"가족"} $my={true} onClick={()=>navigate("/my/profile")}/>
+                <ProfileBlock 
+                    nickname={profile.nickname} 
+                    gender={genderInKorean(profile.gender)} 
+                    ageGroup={Math.floor((new Date().getFullYear() - profile.birth.split("-")[0]) / 10) * 10 + "대"} 
+                    interest={categoryInKorean(profile.category)} 
+                    my={true} 
+                    onClick={()=>navigate("/my/profile")}/>
                 <ContentWrapper>
                     <TextWrapper><SubTitle textE={"내 활동"}/></TextWrapper>
                     <SquareGreenLongButton text={"좋아요한 편지 보기"} width="250px" onClick={()=>navigate("/my/likes")}/>

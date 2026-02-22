@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Navbar from "../components/navbar/navbar"
 import Title from "../components/text/Title"
 import SubTitle from "../components/text/SubTitle"
@@ -12,14 +12,20 @@ import days from "../data/days";
 import Button from "../components/button/SquareGreenLongButton"
 import InvalidText from "../components/text/InvalidText";
 import validate from "../validate/validateProfile";
+import usePostNicknameDuplicate from "../apis/usePostNicknameDuplicate";
+import usePatchUser from "../apis/usePatchUser";
+import categoryInEnglish from "../data/categoryInEnglish";
+import useGetProfile from "../apis/useGetProfile";
+import categoryInKorean from "../data/categoryInKorean";
 
 const ProfileModifyPage = () => {
-    const [nickname, setNickname] = useState("");
-    const [gender, setGender] = useState(null);
-    const [year, setYear] = useState("년");
-    const [month, setMonth] = useState("월");
-    const [day, setDay] = useState("일");
-    const [category, setCategory] = useState("카테고리");
+    const { data:profile } = useGetProfile();
+    const [nickname, setNickname] = useState(profile.nickname);
+    const [gender, setGender] = useState(profile.gender);
+    const [year, setYear] = useState(profile.birth.split("-")[0]);
+    const [month, setMonth] = useState(profile.birth.split("-")[1]);
+    const [day, setDay] = useState(profile.birth.split("-")[2]);
+    const [category, setCategory] = useState(categoryInKorean(profile.category));
 
     const [errors, setErrors] = useState({
         nickname: "",
@@ -28,29 +34,20 @@ const ProfileModifyPage = () => {
         category: ""
     });
 
-    const profile = {
-        nickname: "닉네임",
-        gender: "FEMALE",
-        birth: "1999-03-21",
-        category: "친구"
-    };
+    const { mutate:postNicknameDuplicate } = usePostNicknameDuplicate(setErrors);
+    const { mutate:patchUser } = usePatchUser();
+    
 
-    useEffect(() => {
-        const fetchProfile = async () => {
-
-            setNickname(profile.nickname);
-            setGender(profile.gender);
-
-            const [y, m, d] = profile.birth.split("-");
-            setYear(y);
-            setMonth(m);
-            setDay(d);
-
-            setCategory(profile.category);
-        };
-
-        fetchProfile();
-    }, []);
+    const handleNicknameDuplicate = () => {
+        if (profile.nickname != nickname){
+            postNicknameDuplicate(nickname);
+        } else{
+            setErrors(prev => ({
+                ...prev,
+                nickname: "사용 가능한 닉네임입니다."
+            }));
+        }
+    }
 
     const handleSave = () => {
         const { isValid, errors } = validate({
@@ -63,15 +60,32 @@ const ProfileModifyPage = () => {
         });
 
         setErrors(errors);
+        if (profile.nickname != nickname) {
+            handleNicknameDuplicate();
+        } else{
+            setErrors(prev => ({
+                ...prev,
+                nickname: "사용 가능한 닉네임입니다."
+            }));
+        }
 
-        const birth = year + "-" + month + "-" + day
+        const birth = year + "-" + (month.length < 2 ? "0" + month : month)  + "-" + (day.length < 2 ? "0" + day : day);
+        const categoryEng = categoryInEnglish(category);
+
+        const profileChange = {
+            nickname: (nickname == profile.nickname) ? null : nickname,
+            gender: (gender == profile.gender) ? null : gender,
+            birth: (birth == profile.birth) ? null : birth,
+            category: (category == profile.category) ? null : categoryEng
+        }
 
         if (isValid) {
-            if (nickname == profile.nickname && gender == profile.gender && birth == profile.birth && category == profile.category){
+            if (profileChange.nickname == null && profileChange.gender == null && profileChange.birth == null && profileChange.category == null){
                 alert("변경사항이 없습니다.")
             }
             else {
-                    alert("변경사항이 저장되었습니다.")
+                patchUser(profileChange);
+                alert("변경사항이 저장되었습니다.")
             }
         }
     }
@@ -83,9 +97,13 @@ const ProfileModifyPage = () => {
                 <Title text={"회원 정보를 입력해주세요"}/>
                 <InputWrapper>
                     <TextWrapper><SubTitle textE={"닉네임"}/></TextWrapper>
-                    <BottomLineInput hint={"닉네임을 입력하세요"} value={nickname} onChange={(e) => setNickname(e.target.value)}/>
+                    <BottomLineInput 
+                        hint={"닉네임을 입력하세요"} 
+                        value={nickname} 
+                        onClick={handleNicknameDuplicate}
+                        onChange={(e) => setNickname(e.target.value)}/>
                     <ErrorSlot>
-                        <InvalidText text={errors.nickname} />
+                        <InvalidText text={errors.nickname} valid={errors.nickname.includes("사용 가능")}/>
                     </ErrorSlot>
                     <TextWrapper><SubTitle textE={"성별"}/></TextWrapper>
                     <RadioGroup>
