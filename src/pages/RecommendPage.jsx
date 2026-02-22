@@ -4,13 +4,15 @@ import Title from "../components/text/Title"
 import BirdFlySrc from "../assets/bird_fly1.png"
 import SubTitle from "../components/text/SubTitle"
 import PreviewBlock from "../components/block/PreviewBlock"
+import useGetProfile from "../apis/useGetProfile"
 
 const MyPage = () => {
+    const { data:profile } = useGetProfile();
     return (
         <>
             <Navbar title={"추천 편지"} mypage={true}/>
             <Wrapper>
-                <Title textGreen={"닉네임"} text={"님을 위한 추천!"}/>
+                <Title textGreen={profile.nickname} text={"님을 위한 추천!"}/>
                 <Image src={BirdFlySrc} alt="bird_fly"/>
                 <SubTitle textE={"20대 여성이 좋아요를 많이한 편지예요"}/>
                 <ContentsWrapper>

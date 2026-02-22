@@ -9,12 +9,15 @@ import PreviewBlock from "../components/block/PreviewBlock"
 import RecommendBlock from "../components/block/RecommendBlock"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import useAuthStore from "../store/useAuthStore"
+import useGetProfile from "../apis/useGetProfile"
 
 const HomePage = () => {
     const [searchParams] = useSearchParams();
     const token = searchParams.get("token");
     const setAccessToken = useAuthStore((state) => state.setAccessToken);
     const accessToken = useAuthStore((state) => state.accessToken);
+
+    const { data:profile } = useGetProfile();
 
     useEffect(() => {
         if (!token) return;
@@ -29,7 +32,7 @@ const HomePage = () => {
             <Page>
                 <LogoNavbar mypage={false}/>
                 <Wrapper>
-                    { accessToken && <RecommendBlock nickname={"닉네임"} onClick={()=>navigate("/recommend")}/>}
+                    { accessToken && <RecommendBlock nickname={profile.nickname} onClick={()=>navigate("/recommend")}/>}
                     <ContentsWrapper>
                         <Title text={"편지 보기"}/>
                         <SortWrapper>
