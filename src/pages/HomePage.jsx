@@ -30,9 +30,9 @@ const HomePage = () => {
     return (
         <>
             <Page>
-                <LogoNavbar mypage={false}/>
+                <LogoNavbar mypage={accessToken ? true : false}/>
                 <Wrapper>
-                    { accessToken && <RecommendBlock nickname={profile.nickname} onClick={()=>navigate("/recommend")}/>}
+                    { accessToken && profile && <RecommendBlock nickname={profile.nickname} onClick={()=>navigate("/recommend")}/>}
                     <ContentsWrapper>
                         <Title text={"편지 보기"}/>
                         <SortWrapper>
