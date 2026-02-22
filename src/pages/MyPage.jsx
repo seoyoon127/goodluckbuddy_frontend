@@ -26,7 +26,7 @@ const MyPage = () => {
             <Wrapper>
                 <ProfileBlock 
                     nickname={profile.nickname} 
-                    gender={profile.gender != "NONE" ? genderInKorean(profile.gender) : ""} 
+                    gender={genderInKorean(profile.gender)} 
                     ageGroup={Math.floor((new Date().getFullYear() - profile.birth.split("-")[0]) / 10) * 10 + "대"} 
                     interest={categoryInKorean(profile.category)} 
                     my={true} 
