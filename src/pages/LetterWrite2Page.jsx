@@ -11,13 +11,17 @@ import PreviewPink from "../assets/letter/preview_pink.png";
 import PreviewPurple from "../assets/letter/preview_purple.png";
 import PreviewSkyblue from "../assets/letter/preview_skyblue.png";
 import SquareGreenButton from "../components/button/SquareGreenButton";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import validate from "../validate/validateLetter";
 import InvalidText from "../components/text/InvalidText";
-
+import usePostLetter from "../apis/usePostLetter";
+import categoryInEnglish from "../data/categoryInEnglish";
+import infoInEnglish from "../data/infoInEnglish";
 
 const LetterWrite2Page = () => {
+    const location = useLocation();
+    const { category, selectedInfos } = location.state;
     const [title, setTitle] = useState("");
     const [selected, setSelected] = useState("GREEN");
     const [src, setSrc] = useState(LetterGreen);
@@ -27,6 +31,8 @@ const LetterWrite2Page = () => {
             title: "",
             content: ""
     });
+
+    const { mutate:postLetter } = usePostLetter();
 
     const navigate = useNavigate();
     const handleLetterDesign = (state) => {
@@ -49,9 +55,18 @@ const LetterWrite2Page = () => {
 
         setErrors(errors);
 
+        const letter = {
+            title: title,
+            content: content,
+            letterDesign: selected,
+            category: categoryInEnglish(category),
+            infoNames: selectedInfos.map(info => infoInEnglish(info))
+        }
+
+        console.log(letter)
+
         if (isValid) {
-            // 저장 로직
-            navigate("/home");
+            postLetter(letter)
         }
     }
 
@@ -104,7 +119,6 @@ const Wrapper = styled.div`
 const ContentsWrapper = styled.div`
     width: 80%;
     display: flex;
-    align-items: ;
     gap: 20px;
     margin-bottom: 10px;
 `;

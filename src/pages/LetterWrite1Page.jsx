@@ -10,10 +10,16 @@ import infos from "../data/infos";
 import RoundButton from "../components/button/RoundButton";
 import SquareGreenButton from "../components/button/SquareGreenButton";
 import { useNavigate } from "react-router-dom";
+import validate from "../validate/validateCategory";
+import InvalidText from "../components/text/InvalidText";
 
 const LetterWrite1Page = () => {
     const [category, setCategory] = useState("전체");
     const [selectedInfos, setSelectedInfos] = useState([]);
+    const [errors, setErrors] = useState({
+        category: "",
+        infos:[]
+    });
 
     const navigate = useNavigate();
 
@@ -31,8 +37,23 @@ const LetterWrite1Page = () => {
         });
     };
     const handleNext = () => {
-        // 저장 로직
-        navigate("/letter/write");
+        console.log(selectedInfos)
+        const { isValid, errors } = validate({
+            category,
+            infos: selectedInfos 
+        });
+
+        setErrors(errors);
+        console.log(errors.infos)
+
+        if (isValid) {
+            navigate("/letter/write", {
+                state: {
+                    category,
+                    selectedInfos
+                }
+            });
+        }
     }
 
     return (
@@ -50,6 +71,9 @@ const LetterWrite1Page = () => {
                         />
                     </SortWrapper>
                 </ContentsWrapper>
+                <ErrorSlot>
+                    <InvalidText text={errors.category} />
+                </ErrorSlot>
                 <ContentsWrapper>
                     <SubTitle textE={"상세 정보"}/>
                 </ContentsWrapper>
@@ -65,6 +89,9 @@ const LetterWrite1Page = () => {
                         ))
                     }
                 </InfoWrapper>
+                 <ErrorSlot>
+                    <InvalidText text={errors.infos} />
+                </ErrorSlot>
             </Wrapper>
             <ButtonPosition>
                 <SquareGreenButton text={"다음"} onClick={handleNext}/>
@@ -113,4 +140,12 @@ const ButtonPosition = styled.div`
     position: absolute;
     right: 20px;
     bottom: 30px;
+`;
+
+const ErrorSlot = styled.div`
+    height: 18px;
+    width: 80%;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 10px;
 `;
