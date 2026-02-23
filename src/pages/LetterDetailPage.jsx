@@ -143,7 +143,7 @@ const LetterDetailPage = () => {
                             <ButtonPositionLeft>
                                 <ButtonWrapper>
                                     <RoundWhiteButton text={"삭제"} onClick={handleDelete}/>
-                                    <RoundGreenButton text={"수정"} onClick={()=>navigate(`/letter/${letterDetail.id}/modify`)} />
+                                    <RoundGreenButton text={"수정"} onClick={()=>navigate(`/letter/${id}/modify`)} />
                                 </ButtonWrapper>
                             </ButtonPositionLeft>
                         }

@@ -6,8 +6,7 @@ const useGetLetters = ({category, sort}) => {
         queryKey: ["letters", category, sort],
         queryFn: async () => {
             const response = await axiosInstance.get(`/api/letters?category=${category}&sort=${sort}`);
-            console.log(response.data.result)
-            return response.data.result;
+            return response.data.result ?? [];
         },
     });
 }
