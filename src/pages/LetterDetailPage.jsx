@@ -7,11 +7,13 @@ import LetterSkyblue from "../assets/letter/letter_skyblue.png";
 import SquareGreenButton from "../components/button/SquareGreenButton";
 import RoundWhiteButton from "../components/button/RoundWhiteButton";
 import RoundGreenButton from "../components/button/RoundGreenButton";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ReplyBlock from "../components/block/ReplyBlock";
 import LikeButton from "../components/button/LikeButton";
 import ReplyInput from "../components/input/ReplyInput";
+import useGetLetterDetail from "../apis/useGetLetterDetail";
+import infoInKorean from "../data/infoInKorean";
 
 const LetterDetailPage = () => {
     const [title, setTitle] = useState("");
@@ -22,6 +24,9 @@ const LetterDetailPage = () => {
 
     const [like, setLike] = useState(false);
     const [replyLike, setReplyLike] = useState(true);
+
+    const { id } = useParams();
+    const { data: letterDetail } = useGetLetterDetail(id);
 
     const handleLike = () => {
         setLike(prev => !prev);
@@ -56,16 +61,6 @@ const LetterDetailPage = () => {
         setReply("");
     }
 
-    const letterDetail = {
-        id: 1,
-        title: "제목제목",
-        content: "ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ",
-        letterDesign: "GREEN",
-        parentCategory: "가족",
-        infos: ["거리감", "화해"],
-        mine: true
-    };
-
     const replies = {
         "isSuccess": true,
         "code": "REPLY200_1",
@@ -98,6 +93,7 @@ const LetterDetailPage = () => {
 
     useEffect(() => {
         const fetchLetter = async () => {
+            if (!letterDetail) return;
 
             setTitle(letterDetail.title);
             setContent(letterDetail.content);
@@ -115,7 +111,7 @@ const LetterDetailPage = () => {
                 <Wrapper>
                     <GreenBorder>{title}</GreenBorder>
                     <ContentWrapper>
-                            <Infos>닉네임/날짜</Infos>
+                            <Infos>{letterDetail.writerName}/{letterDetail.createdAt}</Infos>
                             <LikeButton 
                                 selected={like}
                                 likeCount={10}
@@ -124,12 +120,12 @@ const LetterDetailPage = () => {
                             />
                     </ContentWrapper>
                     <ButtonWrapper>
-                            <RoundGreenButton text={"가족"} width="50px"/>
-                            {
-                                letterDetail.infos.map((info) => (
-                                        <RoundWhiteButton text={info} width="60px"/>
-                                ))
-                            }
+                        <RoundGreenButton text={"가족"} width="50px"/>
+                        {
+                            letterDetail.infos.map((info) => (
+                                    <RoundWhiteButton text={infoInKorean(info)} width="60px"/>
+                            ))
+                        }
                     </ButtonWrapper>
                     <LetterContainer>
                         <LetterImg src={src}/>
