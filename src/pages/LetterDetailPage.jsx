@@ -14,6 +14,9 @@ import LikeButton from "../components/button/LikeButton";
 import ReplyInput from "../components/input/ReplyInput";
 import useGetLetterDetail from "../apis/useGetLetterDetail";
 import infoInKorean from "../data/infoInKorean";
+import LoadingPage from "./LoadingPage";
+import usePostLetterLike from "../apis/usePostLetterLike";
+import useDeleteLetterLike from "../apis/useDeleteLetterLike";
 
 const LetterDetailPage = () => {
     const [title, setTitle] = useState("");
@@ -22,14 +25,19 @@ const LetterDetailPage = () => {
     const [replyView, setReplyView] = useState(false);
     const [reply, setReply] = useState("");
 
-    const [like, setLike] = useState(false);
     const [replyLike, setReplyLike] = useState(true);
 
     const { id } = useParams();
     const { data: letterDetail } = useGetLetterDetail(id);
+    const { mutate: postLetterLike } = usePostLetterLike(id);
+    const { mutate: deleteLetterLike } = useDeleteLetterLike(id);
 
     const handleLike = () => {
-        setLike(prev => !prev);
+        if (letterDetail.like) {
+            deleteLetterLike();
+        } else {
+            postLetterLike();
+        }
     };
 
     const handleReplyLike = () => {
@@ -93,16 +101,15 @@ const LetterDetailPage = () => {
 
     useEffect(() => {
         const fetchLetter = async () => {
-            if (!letterDetail) return;
-
             setTitle(letterDetail.title);
             setContent(letterDetail.content);
             handleLetterDesign(letterDetail.letterDesign);
         };
 
         fetchLetter();
-    }, []);
+    }, [letterDetail]);
 
+    if (!letterDetail) return <LoadingPage/>;
 
     return (
         <>
@@ -113,8 +120,8 @@ const LetterDetailPage = () => {
                     <ContentWrapper>
                             <Infos>{letterDetail.writerName}/{letterDetail.createdAt}</Infos>
                             <LikeButton 
-                                selected={like}
-                                likeCount={10}
+                                selected={letterDetail.like}
+                                likeCount={letterDetail.likeCount}
                                 letter={true}
                                 onClick={handleLike}
                             />

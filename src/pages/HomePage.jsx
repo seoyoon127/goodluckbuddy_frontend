@@ -14,6 +14,7 @@ import SquareGreenButton from "../components/button/SquareGreenButton"
 import useGetLetters from "../apis/useGetLetters"
 import categoryInEnglish from "../data/categoryInEnglish"
 import categoryInKorean from "../data/categoryInKorean"
+import LoadingPage from "./LoadingPage"
 
 const HomePage = () => {
     const [searchParams] = useSearchParams();
@@ -35,6 +36,8 @@ const HomePage = () => {
         category: categoryInEnglish(category),
         sort: sort === "최신순" ? "LATEST" : "LIKE"
     });
+
+     if (!letters) return <LoadingPage/>;
 
     return (
         <>
