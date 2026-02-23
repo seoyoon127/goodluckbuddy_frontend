@@ -10,7 +10,7 @@ const categoryInEnglish = (categoryKor) => {
     } else if (categoryKor == "연인") {
         return "LOVER";
     } else {
-        return "INVALID";
+        return "ALL";
     }
 }
 
