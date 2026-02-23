@@ -4,11 +4,19 @@ import categories from "../data/categories"
 import { useState} from "react";
 import sorts from "../data/sorts"
 import PreviewBlock from "../components/block/PreviewBlock"
-
+import categoryInKorean from "../data/categoryInKorean";
+import useGetLetters from "../apis/useGetLetters";
+import categoryInEnglish from "../data/categoryInEnglish";
 
 const Letter = () => {
     const [category, setCategory] = useState("전체");
     const [sort, setSort] = useState("최신순");
+
+    const {data:letters } = useGetLetters({
+        category: categoryInEnglish(category),
+        sort: sort === "최신순" ? "LATEST" : "LIKE"
+    });
+
     return (
         <>
             <Wrapper>
@@ -26,20 +34,18 @@ const Letter = () => {
                         />
                     </SortWrapper>
                 </ContentsWrapper>
-                <PreviewBlock 
-                    title={"제목제목제목"} 
-                    content={"내용내용내용내용내용내용내용내용내용내용내용내용조금만더쓰면된다아아아아아라라라랄"}
-                    nickname={"닉네임"}
-                    date={"2025-12-27"}
-                    likeCount={10}
-                    category={"가족"}/>
-                <PreviewBlock 
-                    title={"제목제목제목"} 
-                    content={"내용내용내용내용내용내용내용내용내용내용내용내용조금만더쓰면된다아아아아아라라라랄"}
-                    nickname={"닉네임"}
-                    date={"2025-12-27"}
-                    likeCount={10}
-                    category={"가족"}/>
+                {
+                    Array.isArray(letters) && letters.map((letter) => (
+                        <PreviewBlock 
+                            id={letter.letterId}
+                            title={letter.title} 
+                            content={letter.content}
+                            nickname={letter.writerName}
+                            date={letter.createdAt}
+                            likeCount={letter.likeCount}
+                            category={categoryInKorean(letter.category)}/>
+                    ))
+                }
             </Wrapper>
         </>
     )
