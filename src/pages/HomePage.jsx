@@ -11,6 +11,9 @@ import { useNavigate, useSearchParams } from "react-router-dom"
 import useAuthStore from "../store/useAuthStore"
 import useGetProfile from "../apis/useGetProfile"
 import SquareGreenButton from "../components/button/SquareGreenButton"
+import useGetLetters from "../apis/useGetLetters"
+import categoryInEnglish from "../data/categoryInEnglish"
+import categoryInKorean from "../data/categoryInKorean"
 
 const HomePage = () => {
     const [searchParams] = useSearchParams();
@@ -28,6 +31,11 @@ const HomePage = () => {
     const [category, setCategory] = useState("전체");
     const [sort, setSort] = useState("최신순");
     const navigate = useNavigate();
+    const {data:letters } = useGetLetters({
+        category: categoryInEnglish(category),
+        sort: sort === "최신순" ? "LATEST" : "LIKE"
+    });
+
     return (
         <>
             <Page>
@@ -49,15 +57,18 @@ const HomePage = () => {
                             />
                         </SortWrapper>
                     </ContentsWrapper>
-                    <PreviewBlock 
-                        id={1}
-                        title={"제목제목제목"} 
-                        content={"내용내용내용내용내용내용내용내용내용내용내용내용조금만더쓰면된다아아아아아라라라랄"}
-                        nickname={"닉네임"}
-                        date={"2025-12-27"}
-                        likeCount={10}
-                        category={"가족"}/>
-                
+                    {
+                        Array.isArray(letters) && letters.map((letter) => (
+                            <PreviewBlock 
+                                id={letter.letterId}
+                                title={letter.title} 
+                                content={letter.content}
+                                nickname={letter.writerName}
+                                date={letter.createdAt}
+                                likeCount={letter.likeCount}
+                                category={categoryInKorean(letter.category)}/>
+                        ))
+                    }
                 </Wrapper>
                 <ButtonPosition>
                     <SquareGreenButton text={"편지 쓰러 가기"} onClick={()=>navigate("/letter/category")}/>
