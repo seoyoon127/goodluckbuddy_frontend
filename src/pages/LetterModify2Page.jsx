@@ -12,13 +12,20 @@ import PreviewPurple from "../assets/letter/preview_purple.png";
 import PreviewSkyblue from "../assets/letter/preview_skyblue.png";
 import SquareGreenButton from "../components/button/SquareGreenButton";
 import RoundWhiteButton from "../components/button/RoundWhiteButton";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import InvalidText from "../components/text/InvalidText";
 import validate from "../validate/validateLetter";
+import useGetLetterDetail from "../apis/useGetLetterDetail";
+import LoadingPage from "./LoadingPage";
+import usePatchLetter from "../apis/usePatchLetter";
+import categoryInEnglish from "../data/categoryInEnglish";
 
-
-const LetterModify1Page = () => {
+const LetterModify2Page = () => {
+    const location = useLocation();
+    const category = location.state?.category;
+    const selectedInfos = location.state?.selectedInfos;
+    const { id } = useParams();
     const [title, setTitle] = useState("");
     const [selected, setSelected] = useState("GREEN");
     const [src, setSrc] = useState(LetterGreen);
@@ -43,22 +50,17 @@ const LetterModify1Page = () => {
         }
     }
 
-    const letter = {
-        title: "제목제목",
-        content: "내용내용내용",
-        letterDesign: "GREEN"
-    };
+    const { data: letter } = useGetLetterDetail(id);
+    const { mutate: patchLetter } = usePatchLetter();
 
     useEffect(() => {
         const fetchLetter = async () => {
-
             setTitle(letter.title);
             setContent(letter.content);
-            setSelected(letter.letterDesign);
+            handleLetterDesign(letter.letterDesign);
         };
-
         fetchLetter();
-    }, []);
+    }, [letter]);
 
     const handleNext = () => {
         const { isValid, errors } = validate({
@@ -68,17 +70,27 @@ const LetterModify1Page = () => {
 
         setErrors(errors);
 
+        const letterChange = {
+            title: title,
+            content: content,
+            letterDesign: selected,
+            category: categoryInEnglish(category),
+            infoNames: selectedInfos 
+                ? selectedInfos
+                : letter.infos.map(info => info.infoName)
+        }
+
+        console.log(letterChange)
         if (isValid) {
             if (letter.title == title && letter.content == content && letter.letterDesign == selected) {
                 alert("변경사항이 없습니다.")
             } else{
-                validate()
-                // 저장 로직
-                alert("변경사항이 저장되었습니다.")
+                patchLetter({id, letter:letterChange});
             }
-            navigate("/home");
         }
     }
+
+    if (!letter) return <LoadingPage/>;
 
     return (
         <>
@@ -110,7 +122,7 @@ const LetterModify1Page = () => {
                 </ContentsWrapper>
             </Wrapper>
             <ButtonPositionLeft>
-                <RoundWhiteButton text={"카테고리 수정"} onClick={()=>navigate("/category/modify")}/>
+                <RoundWhiteButton text={"카테고리 수정"} onClick={()=>navigate(`/category/${id}/modify`)}/>
             </ButtonPositionLeft>
             <ButtonPosition>
                 <SquareGreenButton text={"다음"} onClick={handleNext}/>
@@ -119,7 +131,7 @@ const LetterModify1Page = () => {
     )
 }
 
-export default LetterModify1Page;
+export default LetterModify2Page;
 
 const Wrapper = styled.div`
     display: flex;

@@ -7,11 +7,17 @@ import LetterSkyblue from "../assets/letter/letter_skyblue.png";
 import SquareGreenButton from "../components/button/SquareGreenButton";
 import RoundWhiteButton from "../components/button/RoundWhiteButton";
 import RoundGreenButton from "../components/button/RoundGreenButton";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ReplyBlock from "../components/block/ReplyBlock";
 import LikeButton from "../components/button/LikeButton";
 import ReplyInput from "../components/input/ReplyInput";
+import useGetLetterDetail from "../apis/useGetLetterDetail";
+import infoInKorean from "../data/infoInKorean";
+import LoadingPage from "./LoadingPage";
+import usePostLetterLike from "../apis/usePostLetterLike";
+import useDeleteLetterLike from "../apis/useDeleteLetterLike";
+import useDeleteLetter from "../apis/useDeleteLetter";
 
 const LetterDetailPage = () => {
     const [title, setTitle] = useState("");
@@ -20,11 +26,20 @@ const LetterDetailPage = () => {
     const [replyView, setReplyView] = useState(false);
     const [reply, setReply] = useState("");
 
-    const [like, setLike] = useState(false);
     const [replyLike, setReplyLike] = useState(true);
 
+    const { id } = useParams();
+    const { data: letterDetail } = useGetLetterDetail(id);
+    const { mutate: postLetterLike } = usePostLetterLike(id);
+    const { mutate: deleteLetterLike } = useDeleteLetterLike(id);
+    const { mutate: deleteLetter } = useDeleteLetter(id);
+
     const handleLike = () => {
-        setLike(prev => !prev);
+        if (letterDetail.like) {
+            deleteLetterLike();
+        } else {
+            postLetterLike();
+        }
     };
 
     const handleReplyLike = () => {
@@ -46,8 +61,7 @@ const LetterDetailPage = () => {
     }
 
     const handleDelete = () => {
-        // 삭제 로직
-        alert("삭제되었습니다.");
+        deleteLetter();
         navigate("/home");
     }
 
@@ -55,16 +69,6 @@ const LetterDetailPage = () => {
         // 답글 등록
         setReply("");
     }
-
-    const letterDetail = {
-        id: 1,
-        title: "제목제목",
-        content: "ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ",
-        letterDesign: "GREEN",
-        parentCategory: "가족",
-        infos: ["거리감", "화해"],
-        mine: true
-    };
 
     const replies = {
         "isSuccess": true,
@@ -98,15 +102,15 @@ const LetterDetailPage = () => {
 
     useEffect(() => {
         const fetchLetter = async () => {
-
             setTitle(letterDetail.title);
             setContent(letterDetail.content);
             handleLetterDesign(letterDetail.letterDesign);
         };
 
         fetchLetter();
-    }, []);
+    }, [letterDetail]);
 
+    if (!letterDetail) return <LoadingPage/>;
 
     return (
         <>
@@ -115,21 +119,21 @@ const LetterDetailPage = () => {
                 <Wrapper>
                     <GreenBorder>{title}</GreenBorder>
                     <ContentWrapper>
-                            <Infos>닉네임/날짜</Infos>
+                            <Infos>{letterDetail.writerName}/{letterDetail.createdAt}</Infos>
                             <LikeButton 
-                                selected={like}
-                                likeCount={10}
+                                selected={letterDetail.like}
+                                likeCount={letterDetail.likeCount}
                                 letter={true}
                                 onClick={handleLike}
                             />
                     </ContentWrapper>
                     <ButtonWrapper>
-                            <RoundGreenButton text={"가족"} width="50px"/>
-                            {
-                                letterDetail.infos.map((info) => (
-                                        <RoundWhiteButton text={info} width="60px"/>
-                                ))
-                            }
+                        <RoundGreenButton text={"가족"} width="50px"/>
+                        {
+                            letterDetail.infos.map((info) => (
+                                    <RoundWhiteButton text={infoInKorean(info)} width="60px"/>
+                            ))
+                        }
                     </ButtonWrapper>
                     <LetterContainer>
                         <LetterImg src={src}/>
@@ -140,7 +144,7 @@ const LetterDetailPage = () => {
                             <ButtonPositionLeft>
                                 <ButtonWrapper>
                                     <RoundWhiteButton text={"삭제"} onClick={handleDelete}/>
-                                    <RoundGreenButton text={"수정"} onClick={()=>navigate(`/letter/${letterDetail.id}/modify`)} />
+                                    <RoundGreenButton text={"수정"} onClick={()=>navigate(`/letter/${id}/modify`)} />
                                 </ButtonWrapper>
                             </ButtonPositionLeft>
                         }
