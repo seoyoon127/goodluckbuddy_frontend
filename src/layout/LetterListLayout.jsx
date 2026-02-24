@@ -5,7 +5,7 @@ import { useState} from "react";
 import sorts from "../data/sorts"
 import PreviewBlock from "../components/block/PreviewBlock"
 import categoryInKorean from "../data/categoryInKorean";
-import useGetLetters from "../apis/useGetLetters";
+import useGetMyLetters from "../apis/useGetMyLetters"
 import categoryInEnglish from "../data/categoryInEnglish";
 import useGetLikeLetters from "../apis/useGetLikeLetters";
 
@@ -13,7 +13,7 @@ const Letter = ({like}) => {
     const [category, setCategory] = useState("전체");
     const [sort, setSort] = useState("최신순");
 
-    const normalQuery = useGetLetters({
+    const normalQuery = useGetMyLetters({
         category: categoryInEnglish(category),
         sort: sort === "최신순" ? "LATEST" : "LIKE"
     }, {
