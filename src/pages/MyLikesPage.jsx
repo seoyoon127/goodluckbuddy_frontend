@@ -8,7 +8,7 @@ const MyLikesPage = () => {
         <>
             <Page>
                 <Navbar title={"좋아요한 편지"}/>
-                <LetterList/>
+                <LetterList like={true}/>
             </Page>
         </>
     )

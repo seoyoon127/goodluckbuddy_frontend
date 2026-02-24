@@ -17,6 +17,7 @@ import infoInKorean from "../data/infoInKorean";
 import LoadingPage from "./LoadingPage";
 import usePostLetterLike from "../apis/usePostLetterLike";
 import useDeleteLetterLike from "../apis/useDeleteLetterLike";
+import useDeleteLetter from "../apis/useDeleteLetter";
 
 const LetterDetailPage = () => {
     const [title, setTitle] = useState("");
@@ -31,6 +32,7 @@ const LetterDetailPage = () => {
     const { data: letterDetail } = useGetLetterDetail(id);
     const { mutate: postLetterLike } = usePostLetterLike(id);
     const { mutate: deleteLetterLike } = useDeleteLetterLike(id);
+    const { mutate: deleteLetter } = useDeleteLetter(id);
 
     const handleLike = () => {
         if (letterDetail.like) {
@@ -59,8 +61,7 @@ const LetterDetailPage = () => {
     }
 
     const handleDelete = () => {
-        // 삭제 로직
-        alert("삭제되었습니다.");
+        deleteLetter();
         navigate("/home");
     }
 
