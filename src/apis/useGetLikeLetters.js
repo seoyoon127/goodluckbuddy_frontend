@@ -1,15 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "./axiosInstance";
 
-const useGetLetters = ({category, sort, options = {}}) => {
+const useGetLikeLetters = ({category, sort, options = {}}) => {
     return useQuery({
-        queryKey: ["letters", category, sort],
+        queryKey: ["likeLetters", category, sort],
         queryFn: async () => {
-            const response = await axiosInstance.get(`/api/letters?category=${category}&sort=${sort}`);
+            const response = await axiosInstance.get(`/api/letters/like?category=${category}&sort=${sort}`);
             return response.data.result ?? [];
         },
         enabled: options.enabled, 
     });
 }
 
-export default useGetLetters;
+export default useGetLikeLetters;

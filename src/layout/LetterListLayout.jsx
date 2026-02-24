@@ -7,15 +7,27 @@ import PreviewBlock from "../components/block/PreviewBlock"
 import categoryInKorean from "../data/categoryInKorean";
 import useGetLetters from "../apis/useGetLetters";
 import categoryInEnglish from "../data/categoryInEnglish";
+import useGetLikeLetters from "../apis/useGetLikeLetters";
 
-const Letter = () => {
+const Letter = ({like}) => {
     const [category, setCategory] = useState("전체");
     const [sort, setSort] = useState("최신순");
 
-    const {data:letters } = useGetLetters({
+    const normalQuery = useGetLetters({
         category: categoryInEnglish(category),
         sort: sort === "최신순" ? "LATEST" : "LIKE"
+    }, {
+        enabled: !like
     });
+
+    const likedQuery = useGetLikeLetters({
+        category: categoryInEnglish(category),
+        sort: sort === "최신순" ? "LATEST" : "LIKE"
+    }, {
+        enabled: like
+    });
+
+    const letters = like ? likedQuery.data : normalQuery.data;
 
     return (
         <>
