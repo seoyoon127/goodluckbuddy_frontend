@@ -92,7 +92,7 @@ const router = createBrowserRouter([
                 element: <ProtectedRoute><LetterWrite2Page/></ProtectedRoute>
             },
             {
-                path: 'category/modify',
+                path: 'category/:id/modify',
                 element: <ProtectedRoute><LetterModify1Page/></ProtectedRoute>
             },
             {

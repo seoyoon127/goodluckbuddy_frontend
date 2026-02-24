@@ -10,6 +10,11 @@ import RecommendBlock from "../components/block/RecommendBlock"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import useAuthStore from "../store/useAuthStore"
 import useGetProfile from "../apis/useGetProfile"
+import SquareGreenButton from "../components/button/SquareGreenButton"
+import useGetLetters from "../apis/useGetLetters"
+import categoryInEnglish from "../data/categoryInEnglish"
+import categoryInKorean from "../data/categoryInKorean"
+import LoadingPage from "./LoadingPage"
 
 const HomePage = () => {
     const [searchParams] = useSearchParams();
@@ -27,6 +32,13 @@ const HomePage = () => {
     const [category, setCategory] = useState("전체");
     const [sort, setSort] = useState("최신순");
     const navigate = useNavigate();
+    const {data:letters } = useGetLetters({
+        category: categoryInEnglish(category),
+        sort: sort === "최신순" ? "LATEST" : "LIKE"
+    });
+
+     if (!letters) return <LoadingPage/>;
+
     return (
         <>
             <Page>
@@ -48,15 +60,22 @@ const HomePage = () => {
                             />
                         </SortWrapper>
                     </ContentsWrapper>
-                    <PreviewBlock 
-                        id={1}
-                        title={"제목제목제목"} 
-                        content={"내용내용내용내용내용내용내용내용내용내용내용내용조금만더쓰면된다아아아아아라라라랄"}
-                        nickname={"닉네임"}
-                        date={"2025-12-27"}
-                        likeCount={10}
-                        category={"가족"}/>
+                    {
+                        Array.isArray(letters) && letters.map((letter) => (
+                            <PreviewBlock 
+                                id={letter.letterId}
+                                title={letter.title} 
+                                content={letter.content}
+                                nickname={letter.writerName}
+                                date={letter.createdAt}
+                                likeCount={letter.likeCount}
+                                category={categoryInKorean(letter.category)}/>
+                        ))
+                    }
                 </Wrapper>
+                <ButtonPosition>
+                    <SquareGreenButton text={"편지 쓰러 가기"} onClick={()=>navigate("/letter/category")}/>
+                </ButtonPosition>
             </Page>
         </>
     )
@@ -67,6 +86,7 @@ const Page = styled.div`
     min-height: calc(100vh - 80px);
     display: flex;
     flex-direction: column;
+    position:relative;
 `;
 
 const Wrapper = styled.div`
@@ -76,7 +96,7 @@ const Wrapper = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 100px;
 `;
 
 const ContentsWrapper = styled.div`
@@ -93,4 +113,10 @@ const SortWrapper = styled.div`
     display: flex;
     align-items: center;
     gap:10px;
+`;
+
+const ButtonPosition = styled.div`
+    position: absolute;
+    right: 20px;
+    bottom: 30px;
 `;

@@ -9,11 +9,17 @@ import NormalText from "../components/text/NormalText";
 import infos from "../data/infos";
 import RoundButton from "../components/button/RoundButton";
 import SquareGreenButton from "../components/button/SquareGreenButton";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import useGetLetterDetail from "../apis/useGetLetterDetail";
+import categoryInKorean from "../data/categoryInKorean";
+import infoInEnglish from "../data/infoInEnglish";
 
 const LetterModify1Page = () => {
+    const { id } = useParams();
     const [category, setCategory] = useState("전체");
     const [selectedInfos, setSelectedInfos] = useState([]);
+
+    const { data: letter } = useGetLetterDetail(id);
 
     const navigate = useNavigate();
 
@@ -31,25 +37,26 @@ const LetterModify1Page = () => {
         });
     };
 
-    const categoryInfo = {
-        category: "가족",
-        infos: ["거리감", "화해"]
-    };
-
     useEffect(() => {
         const fetchCategory = async () => {
 
-            setCategory(categoryInfo.category);
-            setSelectedInfos(categoryInfo.infos);
+            setCategory(categoryInKorean(letter.category));
+            setSelectedInfos(letter.infos);
         };
 
         fetchCategory();
     }, []);
 
     const handleNext = () => {
-        // 저장 로직
-        navigate("/letter/modify");
+        navigate(`/letter/${id}/modify`, {
+            state: {
+                    category,
+                    selectedInfos
+                }
+        });
     }
+
+    if (!letter) return <LoadingPage/>;
 
     return (
         <>
@@ -75,8 +82,8 @@ const LetterModify1Page = () => {
                         infos.map((info) => (
                             <RoundButton
                                 text={info}
-                                selected={selectedInfos.includes(info)}
-                                onClick={() => handleSelect(info)}
+                                selected={selectedInfos.includes(infoInEnglish(info))}
+                                onClick={() => handleSelect(infoInEnglish(info))}
                             />
                         ))
                     }

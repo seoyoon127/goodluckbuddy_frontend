@@ -5,9 +5,12 @@ import BirdFlySrc from "../assets/bird_fly1.png"
 import SubTitle from "../components/text/SubTitle"
 import PreviewBlock from "../components/block/PreviewBlock"
 import useGetProfile from "../apis/useGetProfile"
+import useGetRecommendLetters from "../apis/useGetRecommendLetters"
+import categoryInKorean from "../data/categoryInKorean"
 
 const MyPage = () => {
     const { data:profile } = useGetProfile();
+    const { data: letters} = useGetRecommendLetters();
     return (
         <>
             <Navbar title={"추천 편지"} mypage={true}/>
@@ -16,27 +19,17 @@ const MyPage = () => {
                 <Image src={BirdFlySrc} alt="bird_fly"/>
                 <SubTitle textE={"20대 여성이 좋아요를 많이한 편지예요"}/>
                 <ContentsWrapper>
-                    <PreviewBlock 
-                        title={"제목제목제목"} 
-                        content={"내용내용내용내용내용내용내용내용내용내용내용내용조금만더쓰면된다아아아아아라라라랄"}
-                        nickname={"닉네임닉네임닉네임"}
-                        date={"2025.12.27"}
-                        likeCount={10}
-                        category={"가족"}/>
-                    <PreviewBlock 
-                        title={"제목제목제목"} 
-                        content={"내용내용내용내용내용내용내용내용내용내용내용내용조금만더쓰면된다아아아아아라라라랄"}
-                        nickname={"닉네임"}
-                        date={"2025-12-27"}
-                        likeCount={10}
-                        category={"가족"}/>
-                    <PreviewBlock 
-                        title={"제목제목제목"} 
-                        content={"내용내용내용내용내용내용내용내용내용내용내용내용조금만더쓰면된다아아아아아라라라랄"}
-                        nickname={"닉네임"}
-                        date={"2025-12-27"}
-                        likeCount={10}
-                        category={"가족"}/>
+                    {
+                        letters && letters.map((letter) => (
+                            <PreviewBlock 
+                                title={letter.title} 
+                                content={letter.content}
+                                nickname={letter.writerName}
+                                date={letter.createdAt}
+                                likeCount={letter.likeCount}
+                                category={categoryInKorean(letter.category)}/>
+                        ))
+                    }
                 </ContentsWrapper>
             </Wrapper>
         </>
