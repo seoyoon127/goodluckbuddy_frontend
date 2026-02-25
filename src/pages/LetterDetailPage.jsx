@@ -18,6 +18,8 @@ import LoadingPage from "./LoadingPage";
 import usePostLetterLike from "../apis/usePostLetterLike";
 import useDeleteLetterLike from "../apis/useDeleteLetterLike";
 import useDeleteLetter from "../apis/useDeleteLetter";
+import usePostReply from "../apis/usePostLetterReply";
+import useAuthStore from "../store/useAuthStore";
 
 const LetterDetailPage = () => {
     const [title, setTitle] = useState("");
@@ -25,14 +27,15 @@ const LetterDetailPage = () => {
     const [content, setContent] = useState("");
     const [replyView, setReplyView] = useState(false);
     const [reply, setReply] = useState("");
-
     const [replyLike, setReplyLike] = useState(true);
+    const accessToken = useAuthStore((state) => state.accessToken);
 
     const { id } = useParams();
     const { data: letterDetail } = useGetLetterDetail(id);
     const { mutate: postLetterLike } = usePostLetterLike(id);
     const { mutate: deleteLetterLike } = useDeleteLetterLike(id);
     const { mutate: deleteLetter } = useDeleteLetter(id);
+    const { mutate: postReply } = usePostReply(id);
 
     const handleLike = () => {
         if (letterDetail.like) {
@@ -66,7 +69,7 @@ const LetterDetailPage = () => {
     }
 
     const handlePostReply = () => {
-        // 답글 등록
+        postReply({content: reply});
         setReply("");
     }
 
@@ -170,10 +173,12 @@ const LetterDetailPage = () => {
                                         ))
                                     }
                                 </ReplyWrapper>
-                                <ReplyInput 
-                                    value={reply}
-                                    onChange={(e)=>setReply(e.target.value)}
-                                    onClick={handlePostReply}/>
+                                {
+                                    accessToken && <ReplyInput 
+                                                        value={reply}
+                                                        onChange={(e)=>setReply(e.target.value)}
+                                                        onClick={handlePostReply}/>
+                                }
                             </ReplyContainer>
                     }
                 </Wrapper>
