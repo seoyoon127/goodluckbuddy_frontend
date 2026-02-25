@@ -20,6 +20,7 @@ import useDeleteLetterLike from "../apis/useDeleteLetterLike";
 import useDeleteLetter from "../apis/useDeleteLetter";
 import usePostReply from "../apis/usePostLetterReply";
 import useAuthStore from "../store/useAuthStore";
+import useGetReplies from "../apis/useGetReplies";
 
 const LetterDetailPage = () => {
     const [title, setTitle] = useState("");
@@ -36,6 +37,7 @@ const LetterDetailPage = () => {
     const { mutate: deleteLetterLike } = useDeleteLetterLike(id);
     const { mutate: deleteLetter } = useDeleteLetter(id);
     const { mutate: postReply } = usePostReply(id);
+    const { data: replies } = useGetReplies(id);
 
     const handleLike = () => {
         if (letterDetail.like) {
@@ -72,36 +74,6 @@ const LetterDetailPage = () => {
         postReply({content: reply});
         setReply("");
     }
-
-    const replies = {
-        "isSuccess": true,
-        "code": "REPLY200_1",
-        "message": "답글 조회에 성공했습니다.",
-        "result": [
-            {
-            "content": "도움이 됐다면 좋아요 남겨주세요!룰루랄라랄라라라라",
-            "createdAt": "2026-02-07T18:15:04.18088",
-            "likeCount": 0,
-            "replyId": 2,
-            "writerName": "윤서"
-            },
-            {
-            "content": "댓글도 좋아요",
-            "createdAt": "2026-02-07T18:15:14.175703",
-            "likeCount": 0,
-            "replyId": 3,
-            "writerName": "윤서"
-            },
-            {
-            "content": "댓글도 좋아요",
-            "createdAt": "2026-02-07T18:15:14.175703",
-            "likeCount": 0,
-            "replyId": 3,
-            "writerName": "윤서"
-            },
-        ]
-    };
-
 
     useEffect(() => {
         const fetchLetter = async () => {
@@ -152,7 +124,7 @@ const LetterDetailPage = () => {
                             </ButtonPositionLeft>
                         }
                         <ButtonPosition>    
-                            <SquareGreenButton text={`댓글(${replies.result.length})`} onClick={()=>setReplyView(!replyView)}/>
+                            <SquareGreenButton text={`댓글(${replies?.length})`} onClick={()=>setReplyView(!replyView)}/>
                         </ButtonPosition>
                     </LetterContainer>
                     {
@@ -160,7 +132,7 @@ const LetterDetailPage = () => {
                             <ReplyContainer>
                                 <ReplyWrapper>
                                     {
-                                        replies.result.map((reply) => (
+                                        replies && replies.map((reply) => (
                                             <ReplyBlock 
                                                 nickname={reply.writerName}
                                                 content={reply.content}
