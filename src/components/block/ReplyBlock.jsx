@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import LikeButton from "../button/LikeButton";
 import useDeleteReply from "../../apis/useDeleteReply";
+import { useNavigate } from "react-router-dom";
 
-const ReplyBlock = ({replyId, nickname, content, date, like, likeCount, selected, mine, likeOnClick}) => {
+const ReplyBlock = ({replyId, nickname, content, date, likeCount, selected, mine, writerId, likeOnClick}) => {
     const { mutate: deleteReply } = useDeleteReply(replyId);
+    const navigate = useNavigate();
     const handleDelete = () => {
         deleteReply();
     }
@@ -11,7 +13,12 @@ const ReplyBlock = ({replyId, nickname, content, date, like, likeCount, selected
         <>
             <Block>
                 <PreviewWrapper>
-                    <Infos><Nickname>{nickname}</Nickname>{date}</Infos>
+                    <Infos>
+                        <Nickname onClick={(e)=>{
+                            e.stopPropagation();
+                            navigate(`/user/${writerId}`);}}>
+                            {nickname}
+                        </Nickname>{date}</Infos>
                     <LikeButton likeCount={likeCount} selected={selected} letter={false} onClick={likeOnClick}/>
                 </PreviewWrapper>
                 <Content>{content}</Content>
@@ -46,6 +53,7 @@ const Nickname = styled.div`
     color: black;
     overflow: hidden;
     text-overflow: ellipsis;
+    cursor: pointer;
 `;
 
 const PreviewWrapper = styled.div`

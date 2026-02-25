@@ -152,6 +152,7 @@ const LetterDetailPage = () => {
                                                     likeCount={reply.likeCount}
                                                     selected={reply.like}
                                                     mine={reply.mine}
+                                                    writerId={reply.writerId}
                                                     likeOnClick={()=>handleReplyLike(reply.like, reply.replyId)}
                                                 />
                                             ))

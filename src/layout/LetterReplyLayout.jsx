@@ -42,7 +42,8 @@ const Reply = () => {
                             nickname={reply.writerName}
                             date={reply.createdAt}
                             likeCount={reply.likeCount}
-                            category={categoryInKorean(reply.category)}/>
+                            category={categoryInKorean(reply.category)}
+                            writerId={reply.writerId}/>
                     ))
                 }
             </Wrapper>
