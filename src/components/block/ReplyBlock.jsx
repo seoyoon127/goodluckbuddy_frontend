@@ -1,7 +1,12 @@
 import styled from "styled-components";
 import LikeButton from "../button/LikeButton";
+import useDeleteReply from "../../apis/useDeleteReply";
 
-const ReplyBlock = ({nickname, content, date, like, likeCount, likeOnClick}) => {
+const ReplyBlock = ({replyId, nickname, content, date, like, likeCount, mine, likeOnClick}) => {
+    const { mutate: deleteReply } = useDeleteReply(replyId);
+    const handleDelete = () => {
+        deleteReply();
+    }
     return (
         <>
             <Block>
@@ -10,6 +15,7 @@ const ReplyBlock = ({nickname, content, date, like, likeCount, likeOnClick}) => 
                     <LikeButton likeCount={likeCount} selected={like} letter={false} onClick={likeOnClick}/>
                 </PreviewWrapper>
                 <Content>{content}</Content>
+                {mine && <DeleteButton onClick={handleDelete}>삭제</DeleteButton>}
             </Block>
         </>
     )
@@ -24,6 +30,7 @@ const Block = styled.div`
     display:flex;
     flex-direction: column;
     padding: 5px 10px 5px 10px;
+    position: relative;
 `;
 
 const Infos = styled.div`
@@ -51,4 +58,17 @@ const PreviewWrapper = styled.div`
 const Content = styled.div`
     margin-top: 3px;
     margin-bottom: 3px;
+`;
+
+const DeleteButton = styled.div`
+    font-size: 12px;
+    color: gray;
+    position: absolute;
+    right: 10px;
+    bottom: 7px;
+    cursor: pointer;
+
+    &:focus {
+        outline: none;
+    }
 `;
