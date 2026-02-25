@@ -1,14 +1,15 @@
 import styled from "styled-components";
 import Navbar from "../components/navbar/navbar";
-import LetterList from "../layout/LetterListLayout";
-
+import ReplyList from "../layout/LetterReplyLayout";
+import { useLocation } from "react-router-dom";
 
 const UserReplyPage = () => {
+    const location = useLocation();
     return (
         <>
             <Page>
-                <Navbar title={"닉네임님의 댓글"}/>
-                <LetterList/>
+                <Navbar title={location.state.nickname + "님의 댓글"}/>
+                <ReplyList userId={location.state.id}/>
             </Page>
         </>
     )

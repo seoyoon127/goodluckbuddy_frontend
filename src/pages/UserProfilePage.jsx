@@ -8,11 +8,21 @@ import useGetUserProfile from "../apis/useGetUserProfile"
 import genderInKorean from "../data/genderInKoreaan"
 import categoryInKorean from "../data/categoryInKorean"
 import LoadingPage from "./LoadingPage"
+import useAuthStore from "../store/useAuthStore"
+import { useEffect } from "react"
 
 const UserProfilePage = () => {
+    const myId = useAuthStore((state) => state.id);
     const navigate = useNavigate();
     const {id} = useParams();
     const { data: profile } = useGetUserProfile(id);
+    useEffect(() => {
+        if (!profile) return;
+
+        if (profile.id == myId) {
+            navigate("/my", { replace: true });
+        }
+    }, [profile, myId]);
     if (!profile) return <LoadingPage/>
     return (
         <>
@@ -26,8 +36,8 @@ const UserProfilePage = () => {
                     my={false}/>
                 <ContentWrapper>
                     <TextWrapper><SubTitle textE={profile.nickname + "님의 활동"}/></TextWrapper>
-                    <SquareGreenLongButton text={"작성한 편지 보기"} width="250px" onClick={()=>navigate(`/user/${id}/letter`)}/>
-                    <SquareGreenLongButton text={"작성한 댓글 보기"} width="250px" onClick={()=>navigate(`/user/${id}/reply`)}/>
+                    <SquareGreenLongButton text={"작성한 편지 보기"} width="250px" onClick={()=>navigate(`/user/${id}/letter`, {state:{nickname:profile.nickname, id:id}})}/>
+                    <SquareGreenLongButton text={"작성한 댓글 보기"} width="250px" onClick={()=>navigate(`/user/${id}/reply`, {state:{nickname:profile.nickname, id:id}})}/>
                 </ContentWrapper>
             </Wrapper>
         </>

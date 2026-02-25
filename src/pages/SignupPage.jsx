@@ -29,8 +29,11 @@ const MyPage = () => {
     const [searchParams] = useSearchParams();
     const token = searchParams.get("token");
     const setAccessToken = useAuthStore((state) => state.setAccessToken);
+    const setId = useAuthStore((state) => state.setId);
 
-     const [errors, setErrors] = useState({
+    const { data:profile } = useGetProfile();
+
+    const [errors, setErrors] = useState({
         nickname: "",
         gender: "",
         birth: "",
@@ -42,8 +45,10 @@ const MyPage = () => {
 
     useEffect(() => {
         if (!token) return;
+        if (!profile) return;
         setAccessToken(token);
-    }, [token]);
+        setId(profile.id);
+    }, [token, profile]);
 
     const handleNicknameDuplicate = () => {
         postNicknameDuplicate(nickname);
@@ -71,6 +76,8 @@ const MyPage = () => {
             birth: birth,
             category: categoryEng
         }
+
+        console.log(profile)
         if (isValid) {
             patchUser(profile);
         }

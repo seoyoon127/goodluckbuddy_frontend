@@ -8,8 +8,9 @@ import categoryInKorean from "../data/categoryInKorean";
 import useGetMyLetters from "../apis/useGetMyLetters"
 import categoryInEnglish from "../data/categoryInEnglish";
 import useGetLikeLetters from "../apis/useGetLikeLetters";
+import useGetUserLetters from "../apis/useGetUserLetters";
 
-const Letter = ({like}) => {
+const Letter = ({like, userId}) => {
     const [category, setCategory] = useState("전체");
     const [sort, setSort] = useState("최신순");
 
@@ -17,7 +18,7 @@ const Letter = ({like}) => {
         category: categoryInEnglish(category),
         sort: sort === "최신순" ? "LATEST" : "LIKE"
     }, {
-        enabled: !like
+        enabled: !like && !userId
     });
 
     const likedQuery = useGetLikeLetters({
@@ -27,7 +28,15 @@ const Letter = ({like}) => {
         enabled: like
     });
 
-    const letters = like ? likedQuery.data : normalQuery.data;
+    const userQuery = useGetUserLetters({
+        category: categoryInEnglish(category),
+        sort: sort === "최신순" ? "LATEST" : "LIKE",
+        id: userId
+    }, {
+        enabled: !!userId
+    });
+
+    const letters = like ? likedQuery.data : (userId ? userQuery.data : normalQuery.data);
 
     return (
         <>
