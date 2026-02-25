@@ -21,6 +21,7 @@ import useDeleteLetter from "../apis/useDeleteLetter";
 import usePostReply from "../apis/usePostLetterReply";
 import useAuthStore from "../store/useAuthStore";
 import useGetReplies from "../apis/useGetReplies";
+import SubTitle from "../components/text/SubTitle";
 
 const LetterDetailPage = () => {
     const [title, setTitle] = useState("");
@@ -132,17 +133,20 @@ const LetterDetailPage = () => {
                             <ReplyContainer>
                                 <ReplyWrapper>
                                     {
-                                        replies && replies.map((reply) => (
-                                            <ReplyBlock 
-                                                nickname={reply.writerName}
-                                                content={reply.content}
-                                                date={reply.createdAt.slice(0, 10)}
-                                                likeCount={reply.likeCount}
-                                                selected={replyLike}
-                                                likeOnClick={handleReplyLike}
-                                                
-                                            />
-                                        ))
+                                        replies?.length > 0 ?
+                                            replies && replies.map((reply) => (
+                                                <ReplyBlock 
+                                                    replyId={reply.replyId}
+                                                    nickname={reply.writerName}
+                                                    content={reply.content}
+                                                    date={reply.createdAt.slice(0, 10)}
+                                                    likeCount={reply.likeCount}
+                                                    selected={replyLike}
+                                                    mine={reply.mine}
+                                                    likeOnClick={handleReplyLike}
+                                                />
+                                            ))
+                                        : <SubTitle textE={"아직 댓글이 없습니다."}/>
                                     }
                                 </ReplyWrapper>
                                 {
