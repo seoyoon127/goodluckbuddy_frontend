@@ -21,13 +21,21 @@ const HomePage = () => {
     const token = searchParams.get("token");
     const setAccessToken = useAuthStore((state) => state.setAccessToken);
     const accessToken = useAuthStore((state) => state.accessToken);
+    const setId = useAuthStore((state) => state.setId);
 
     const { data:profile } = useGetProfile();
 
     useEffect(() => {
         if (!token) return;
+
         setAccessToken(token);
     }, [token]);
+    
+    useEffect(() => {
+        if (!profile) return;
+
+        setId(profile.id);
+    }, [profile]);
     
     const [category, setCategory] = useState("전체");
     const [sort, setSort] = useState("최신순");

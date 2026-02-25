@@ -7,15 +7,25 @@ import PreviewBlock from "../components/block/PreviewBlock"
 import categoryInKorean from "../data/categoryInKorean";
 import categoryInEnglish from "../data/categoryInEnglish";
 import useGetMyReplies from "../apis/useGetMyReplies";
+import useGetUserReplies from "../apis/useGetUserReplies";
 
-const Reply = () => {
+const Reply = ({userId}) => {
     const [category, setCategory] = useState("전체");
     const [sort, setSort] = useState("최신순");
 
-    const { data: replies } = useGetMyReplies({
+    const UserQuery = useGetUserReplies({
+        category: categoryInEnglish(category),
+        sort: sort === "최신순" ? "LATEST" : "LIKE",
+        id: userId
+    });
+
+    const myQuery =  useGetMyReplies({
         category: categoryInEnglish(category),
         sort: sort === "최신순" ? "LATEST" : "LIKE"
     });
+
+    const { data: replies } = userId ? UserQuery : myQuery;
+
     return (
         <>
             <Wrapper>
