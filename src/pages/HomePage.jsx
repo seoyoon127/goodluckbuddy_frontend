@@ -69,7 +69,8 @@ const HomePage = () => {
                                 nickname={letter.writerName}
                                 date={letter.createdAt}
                                 likeCount={letter.likeCount}
-                                category={categoryInKorean(letter.category)}/>
+                                category={categoryInKorean(letter.category)}
+                                writerId={letter.writerId}/>
                         ))
                     }
                 </Wrapper>

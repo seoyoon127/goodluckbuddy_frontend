@@ -8,9 +8,8 @@ import categoryInKorean from "../data/categoryInKorean";
 import useGetMyLetters from "../apis/useGetMyLetters"
 import categoryInEnglish from "../data/categoryInEnglish";
 import useGetLikeLetters from "../apis/useGetLikeLetters";
-import useGetMyReplies from "../apis/useGetMyReplies";
 
-const Letter = ({like,  reply}) => {
+const Letter = ({like}) => {
     const [category, setCategory] = useState("전체");
     const [sort, setSort] = useState("최신순");
 
@@ -18,7 +17,7 @@ const Letter = ({like,  reply}) => {
         category: categoryInEnglish(category),
         sort: sort === "최신순" ? "LATEST" : "LIKE"
     }, {
-        enabled: !like && !reply
+        enabled: !like
     });
 
     const likedQuery = useGetLikeLetters({
@@ -28,14 +27,7 @@ const Letter = ({like,  reply}) => {
         enabled: like
     });
 
-    const replyQuery = useGetMyReplies({
-        category: categoryInEnglish(category),
-        sort: sort === "최신순" ? "LATEST" : "LIKE"
-    }, {
-        enabled: reply
-    });
-
-    const letters = like ? likedQuery.data : (reply ? replyQuery.data : normalQuery.data);
+    const letters = like ? likedQuery.data : normalQuery.data;
 
     return (
         <>
@@ -63,7 +55,8 @@ const Letter = ({like,  reply}) => {
                             nickname={letter.writerName}
                             date={letter.createdAt}
                             likeCount={letter.likeCount}
-                            category={categoryInKorean(letter.category)}/>
+                            category={categoryInKorean(letter.category)}
+                            writerId={letter.writerId}/>
                     ))
                 }
             </Wrapper>
