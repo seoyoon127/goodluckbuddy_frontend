@@ -1,14 +1,13 @@
 import styled from "styled-components";
 import Navbar from "../components/navbar/navbar";
-import LetterList from "../layout/LetterListLayout";
-
+import ReplyList from "../layout/LetterReplyLayout";
 
 const MyReplyPage = () => {
     return (
         <>
             <Page>
                 <Navbar title={"내가 쓴 댓글"}/>
-                <LetterList/>
+                <ReplyList/>
             </Page>
         </>
     )

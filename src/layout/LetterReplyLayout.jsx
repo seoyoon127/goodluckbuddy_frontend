@@ -5,38 +5,17 @@ import { useState} from "react";
 import sorts from "../data/sorts"
 import PreviewBlock from "../components/block/PreviewBlock"
 import categoryInKorean from "../data/categoryInKorean";
-import useGetMyLetters from "../apis/useGetMyLetters"
 import categoryInEnglish from "../data/categoryInEnglish";
-import useGetLikeLetters from "../apis/useGetLikeLetters";
 import useGetMyReplies from "../apis/useGetMyReplies";
 
-const Letter = ({like,  reply}) => {
+const Reply = () => {
     const [category, setCategory] = useState("전체");
     const [sort, setSort] = useState("최신순");
 
-    const normalQuery = useGetMyLetters({
+    const { data: replies } = useGetMyReplies({
         category: categoryInEnglish(category),
         sort: sort === "최신순" ? "LATEST" : "LIKE"
-    }, {
-        enabled: !like && !reply
     });
-
-    const likedQuery = useGetLikeLetters({
-        category: categoryInEnglish(category),
-        sort: sort === "최신순" ? "LATEST" : "LIKE"
-    }, {
-        enabled: like
-    });
-
-    const replyQuery = useGetMyReplies({
-        category: categoryInEnglish(category),
-        sort: sort === "최신순" ? "LATEST" : "LIKE"
-    }, {
-        enabled: reply
-    });
-
-    const letters = like ? likedQuery.data : (reply ? replyQuery.data : normalQuery.data);
-
     return (
         <>
             <Wrapper>
@@ -55,15 +34,15 @@ const Letter = ({like,  reply}) => {
                     </SortWrapper>
                 </ContentsWrapper>
                 {
-                    Array.isArray(letters) && letters.map((letter) => (
+                    Array.isArray(replies) && replies.map((reply) => (
                         <PreviewBlock 
-                            id={letter.letterId}
-                            title={letter.title} 
-                            content={letter.content}
-                            nickname={letter.writerName}
-                            date={letter.createdAt}
-                            likeCount={letter.likeCount}
-                            category={categoryInKorean(letter.category)}/>
+                            id={reply.replyId}
+                            title={reply.letterTitle} 
+                            content={reply.content}
+                            nickname={reply.writerName}
+                            date={reply.createdAt}
+                            likeCount={reply.likeCount}
+                            category={categoryInKorean(reply.category)}/>
                     ))
                 }
             </Wrapper>
@@ -71,7 +50,7 @@ const Letter = ({like,  reply}) => {
     )
 }
 
-export default Letter;
+export default Reply;
 
 const Wrapper = styled.div`
     flex: 1;
