@@ -36,7 +36,7 @@ const Reply = () => {
                 {
                     Array.isArray(replies) && replies.map((reply) => (
                         <PreviewBlock 
-                            id={reply.replyId}
+                            id={reply.letterId}
                             title={reply.letterTitle} 
                             content={reply.content}
                             nickname={reply.writerName}

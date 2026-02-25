@@ -22,6 +22,9 @@ import usePostReply from "../apis/usePostLetterReply";
 import useAuthStore from "../store/useAuthStore";
 import useGetReplies from "../apis/useGetReplies";
 import SubTitle from "../components/text/SubTitle";
+import usePostReplyLike from "../apis/usePostReplyLike";
+import useDeleteReplyLike from "../apis/useDeleteReplyLike";
+import categoryInKorean from "../data/categoryInKorean";
 
 const LetterDetailPage = () => {
     const [title, setTitle] = useState("");
@@ -29,7 +32,6 @@ const LetterDetailPage = () => {
     const [content, setContent] = useState("");
     const [replyView, setReplyView] = useState(false);
     const [reply, setReply] = useState("");
-    const [replyLike, setReplyLike] = useState(true);
     const accessToken = useAuthStore((state) => state.accessToken);
 
     const { id } = useParams();
@@ -39,6 +41,9 @@ const LetterDetailPage = () => {
     const { mutate: deleteLetter } = useDeleteLetter(id);
     const { mutate: postReply } = usePostReply(id);
     const { data: replies } = useGetReplies(id);
+    const { mutate: postReplyLike } = usePostReplyLike(id);
+    const { mutate: deleteReplyLike } = useDeleteReplyLike(id);
+
 
     const handleLike = () => {
         if (letterDetail.like) {
@@ -48,8 +53,12 @@ const LetterDetailPage = () => {
         }
     };
 
-    const handleReplyLike = () => {
-        setReplyLike(prev => !prev);
+    const handleReplyLike = (like, replyId) => {
+        if (like) {
+            deleteReplyLike(replyId);
+        } else {
+            postReplyLike(replyId);
+        }
     };
 
     const navigate = useNavigate();
@@ -104,7 +113,7 @@ const LetterDetailPage = () => {
                             />
                     </ContentWrapper>
                     <ButtonWrapper>
-                        <RoundGreenButton text={"가족"} width="50px"/>
+                        <RoundGreenButton text={categoryInKorean(letterDetail?.category)} width="50px"/>
                         {
                             letterDetail.infos.map((info) => (
                                     <RoundWhiteButton text={infoInKorean(info)} width="60px"/>
@@ -141,9 +150,9 @@ const LetterDetailPage = () => {
                                                     content={reply.content}
                                                     date={reply.createdAt.slice(0, 10)}
                                                     likeCount={reply.likeCount}
-                                                    selected={replyLike}
+                                                    selected={reply.like}
                                                     mine={reply.mine}
-                                                    likeOnClick={handleReplyLike}
+                                                    likeOnClick={()=>handleReplyLike(reply.like, reply.replyId)}
                                                 />
                                             ))
                                         : <SubTitle textE={"아직 댓글이 없습니다."}/>
