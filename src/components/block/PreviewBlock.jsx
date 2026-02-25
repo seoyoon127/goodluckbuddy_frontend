@@ -3,7 +3,7 @@ import Title from "../text/Title";
 import RoundGreenButton from "../button/RoundGreenButton";
 import { useNavigate } from "react-router-dom";
 
-const PreviewBlock = ({id, title, content, nickname, date, likeCount, category}) => {
+const PreviewBlock = ({id, title, content, nickname, date, likeCount, category, writerId}) => {
     const navigate = useNavigate();
     return (
         <>
@@ -11,7 +11,14 @@ const PreviewBlock = ({id, title, content, nickname, date, likeCount, category})
                 <TextWrapper><Title text={title}/></TextWrapper>
                 <Content>{content}</Content>
                 <PreviewWrapper>
-                    <Infos><Nickname>{nickname}</Nickname>/{date}/❤️{likeCount}</Infos>
+                    <Infos>
+                        <Nickname onClick={(e)=>{
+                            e.stopPropagation();
+                            navigate(`/user/${writerId}`);}}>
+                            {nickname}
+                        </Nickname>
+                        /{date}/❤️{likeCount}
+                    </Infos>
                     <RoundGreenButton text={category} width="50px"/>
                 </PreviewWrapper>
             </Block>
@@ -57,6 +64,7 @@ const Nickname = styled.div`
     max-width: 85px;
     overflow: hidden;
     text-overflow: ellipsis;
+    cursor: pointer;
 `;
 
 const PreviewWrapper = styled.div`

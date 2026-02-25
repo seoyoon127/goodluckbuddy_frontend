@@ -5,38 +5,26 @@ import { useState} from "react";
 import sorts from "../data/sorts"
 import PreviewBlock from "../components/block/PreviewBlock"
 import categoryInKorean from "../data/categoryInKorean";
-import useGetMyLetters from "../apis/useGetMyLetters"
 import categoryInEnglish from "../data/categoryInEnglish";
-import useGetLikeLetters from "../apis/useGetLikeLetters";
-import useGetUserLetters from "../apis/useGetUserLetters";
+import useGetMyReplies from "../apis/useGetMyReplies";
+import useGetUserReplies from "../apis/useGetUserReplies";
 
-const Letter = ({like, userId}) => {
+const Reply = ({userId}) => {
     const [category, setCategory] = useState("전체");
     const [sort, setSort] = useState("최신순");
 
-    const normalQuery = useGetMyLetters({
-        category: categoryInEnglish(category),
-        sort: sort === "최신순" ? "LATEST" : "LIKE"
-    }, {
-        enabled: !like && !userId
-    });
-
-    const likedQuery = useGetLikeLetters({
-        category: categoryInEnglish(category),
-        sort: sort === "최신순" ? "LATEST" : "LIKE"
-    }, {
-        enabled: like
-    });
-
-    const userQuery = useGetUserLetters({
+    const UserQuery = useGetUserReplies({
         category: categoryInEnglish(category),
         sort: sort === "최신순" ? "LATEST" : "LIKE",
         id: userId
-    }, {
-        enabled: !!userId
     });
 
-    const letters = like ? likedQuery.data : (userId ? userQuery.data : normalQuery.data);
+    const myQuery =  useGetMyReplies({
+        category: categoryInEnglish(category),
+        sort: sort === "최신순" ? "LATEST" : "LIKE"
+    });
+
+    const { data: replies } = userId ? UserQuery : myQuery;
 
     return (
         <>
@@ -56,16 +44,16 @@ const Letter = ({like, userId}) => {
                     </SortWrapper>
                 </ContentsWrapper>
                 {
-                    Array.isArray(letters) && letters.map((letter) => (
+                    Array.isArray(replies) && replies.map((reply) => (
                         <PreviewBlock 
-                            id={letter.letterId}
-                            title={letter.title} 
-                            content={letter.content}
-                            nickname={letter.writerName}
-                            date={letter.createdAt}
-                            likeCount={letter.likeCount}
-                            category={categoryInKorean(letter.category)}
-                            writerId={letter.writerId}/>
+                            id={reply.letterId}
+                            title={reply.letterTitle} 
+                            content={reply.content}
+                            nickname={reply.writerName}
+                            date={reply.createdAt}
+                            likeCount={reply.likeCount}
+                            category={categoryInKorean(reply.category)}
+                            writerId={reply.writerId}/>
                     ))
                 }
             </Wrapper>
@@ -73,7 +61,7 @@ const Letter = ({like, userId}) => {
     )
 }
 
-export default Letter;
+export default Reply;
 
 const Wrapper = styled.div`
     flex: 1;

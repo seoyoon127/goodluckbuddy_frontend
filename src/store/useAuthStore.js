@@ -5,11 +5,13 @@ const useAuthStore = create(
   persist(
     (set) => ({
       accessToken: null,
+      id: null,
       setAccessToken: (token) => set({ accessToken: token }),
       clearAccessToken: () => set({ accessToken: null }),
+      setId: (id) => set({id: id})
     }),
     {
-      name: "userIdStorage", // localStorage key
+      name: "userIdStorage",
     }
   )
 );

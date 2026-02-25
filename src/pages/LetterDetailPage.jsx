@@ -18,6 +18,13 @@ import LoadingPage from "./LoadingPage";
 import usePostLetterLike from "../apis/usePostLetterLike";
 import useDeleteLetterLike from "../apis/useDeleteLetterLike";
 import useDeleteLetter from "../apis/useDeleteLetter";
+import usePostReply from "../apis/usePostLetterReply";
+import useAuthStore from "../store/useAuthStore";
+import useGetReplies from "../apis/useGetReplies";
+import SubTitle from "../components/text/SubTitle";
+import usePostReplyLike from "../apis/usePostReplyLike";
+import useDeleteReplyLike from "../apis/useDeleteReplyLike";
+import categoryInKorean from "../data/categoryInKorean";
 
 const LetterDetailPage = () => {
     const [title, setTitle] = useState("");
@@ -25,14 +32,18 @@ const LetterDetailPage = () => {
     const [content, setContent] = useState("");
     const [replyView, setReplyView] = useState(false);
     const [reply, setReply] = useState("");
-
-    const [replyLike, setReplyLike] = useState(true);
+    const accessToken = useAuthStore((state) => state.accessToken);
 
     const { id } = useParams();
     const { data: letterDetail } = useGetLetterDetail(id);
     const { mutate: postLetterLike } = usePostLetterLike(id);
     const { mutate: deleteLetterLike } = useDeleteLetterLike(id);
     const { mutate: deleteLetter } = useDeleteLetter(id);
+    const { mutate: postReply } = usePostReply(id);
+    const { data: replies } = useGetReplies(id);
+    const { mutate: postReplyLike } = usePostReplyLike(id);
+    const { mutate: deleteReplyLike } = useDeleteReplyLike(id);
+
 
     const handleLike = () => {
         if (letterDetail.like) {
@@ -42,8 +53,12 @@ const LetterDetailPage = () => {
         }
     };
 
-    const handleReplyLike = () => {
-        setReplyLike(prev => !prev);
+    const handleReplyLike = (like, replyId) => {
+        if (like) {
+            deleteReplyLike(replyId);
+        } else {
+            postReplyLike(replyId);
+        }
     };
 
     const navigate = useNavigate();
@@ -66,39 +81,9 @@ const LetterDetailPage = () => {
     }
 
     const handlePostReply = () => {
-        // 답글 등록
+        postReply({content: reply});
         setReply("");
     }
-
-    const replies = {
-        "isSuccess": true,
-        "code": "REPLY200_1",
-        "message": "답글 조회에 성공했습니다.",
-        "result": [
-            {
-            "content": "도움이 됐다면 좋아요 남겨주세요!룰루랄라랄라라라라",
-            "createdAt": "2026-02-07T18:15:04.18088",
-            "likeCount": 0,
-            "replyId": 2,
-            "writerName": "윤서"
-            },
-            {
-            "content": "댓글도 좋아요",
-            "createdAt": "2026-02-07T18:15:14.175703",
-            "likeCount": 0,
-            "replyId": 3,
-            "writerName": "윤서"
-            },
-            {
-            "content": "댓글도 좋아요",
-            "createdAt": "2026-02-07T18:15:14.175703",
-            "likeCount": 0,
-            "replyId": 3,
-            "writerName": "윤서"
-            },
-        ]
-    };
-
 
     useEffect(() => {
         const fetchLetter = async () => {
@@ -128,7 +113,7 @@ const LetterDetailPage = () => {
                             />
                     </ContentWrapper>
                     <ButtonWrapper>
-                        <RoundGreenButton text={"가족"} width="50px"/>
+                        <RoundGreenButton text={categoryInKorean(letterDetail?.category)} width="50px"/>
                         {
                             letterDetail.infos.map((info) => (
                                     <RoundWhiteButton text={infoInKorean(info)} width="60px"/>
@@ -149,7 +134,7 @@ const LetterDetailPage = () => {
                             </ButtonPositionLeft>
                         }
                         <ButtonPosition>    
-                            <SquareGreenButton text={`댓글(${replies.result.length})`} onClick={()=>setReplyView(!replyView)}/>
+                            <SquareGreenButton text={`댓글(${replies?.length})`} onClick={()=>setReplyView(!replyView)}/>
                         </ButtonPosition>
                     </LetterContainer>
                     {
@@ -157,23 +142,29 @@ const LetterDetailPage = () => {
                             <ReplyContainer>
                                 <ReplyWrapper>
                                     {
-                                        replies.result.map((reply) => (
-                                            <ReplyBlock 
-                                                nickname={reply.writerName}
-                                                content={reply.content}
-                                                date={reply.createdAt.slice(0, 10)}
-                                                likeCount={reply.likeCount}
-                                                selected={replyLike}
-                                                likeOnClick={handleReplyLike}
-                                                
-                                            />
-                                        ))
+                                        replies?.length > 0 ?
+                                            replies && replies.map((reply) => (
+                                                <ReplyBlock 
+                                                    replyId={reply.replyId}
+                                                    nickname={reply.writerName}
+                                                    content={reply.content}
+                                                    date={reply.createdAt.slice(0, 10)}
+                                                    likeCount={reply.likeCount}
+                                                    selected={reply.like}
+                                                    mine={reply.mine}
+                                                    writerId={reply.writerId}
+                                                    likeOnClick={()=>handleReplyLike(reply.like, reply.replyId)}
+                                                />
+                                            ))
+                                        : <SubTitle textE={"아직 댓글이 없습니다."}/>
                                     }
                                 </ReplyWrapper>
-                                <ReplyInput 
-                                    value={reply}
-                                    onChange={(e)=>setReply(e.target.value)}
-                                    onClick={handlePostReply}/>
+                                {
+                                    accessToken && <ReplyInput 
+                                                        value={reply}
+                                                        onChange={(e)=>setReply(e.target.value)}
+                                                        onClick={handlePostReply}/>
+                                }
                             </ReplyContainer>
                     }
                 </Wrapper>

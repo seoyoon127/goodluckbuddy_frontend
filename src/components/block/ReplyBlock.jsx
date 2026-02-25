@@ -1,15 +1,28 @@
 import styled from "styled-components";
 import LikeButton from "../button/LikeButton";
+import useDeleteReply from "../../apis/useDeleteReply";
+import { useNavigate } from "react-router-dom";
 
-const ReplyBlock = ({nickname, content, date, like, likeCount, likeOnClick}) => {
+const ReplyBlock = ({replyId, nickname, content, date, likeCount, selected, mine, writerId, likeOnClick}) => {
+    const { mutate: deleteReply } = useDeleteReply(replyId);
+    const navigate = useNavigate();
+    const handleDelete = () => {
+        deleteReply();
+    }
     return (
         <>
             <Block>
                 <PreviewWrapper>
-                    <Infos><Nickname>{nickname}</Nickname>{date}</Infos>
-                    <LikeButton likeCount={likeCount} selected={like} letter={false} onClick={likeOnClick}/>
+                    <Infos>
+                        <Nickname onClick={(e)=>{
+                            e.stopPropagation();
+                            navigate(`/user/${writerId}`);}}>
+                            {nickname}
+                        </Nickname>{date}</Infos>
+                    <LikeButton likeCount={likeCount} selected={selected} letter={false} onClick={likeOnClick}/>
                 </PreviewWrapper>
                 <Content>{content}</Content>
+                {mine && <DeleteButton onClick={handleDelete}>삭제</DeleteButton>}
             </Block>
         </>
     )
@@ -24,6 +37,7 @@ const Block = styled.div`
     display:flex;
     flex-direction: column;
     padding: 5px 10px 5px 10px;
+    position: relative;
 `;
 
 const Infos = styled.div`
@@ -39,6 +53,7 @@ const Nickname = styled.div`
     color: black;
     overflow: hidden;
     text-overflow: ellipsis;
+    cursor: pointer;
 `;
 
 const PreviewWrapper = styled.div`
@@ -51,4 +66,17 @@ const PreviewWrapper = styled.div`
 const Content = styled.div`
     margin-top: 3px;
     margin-bottom: 3px;
+`;
+
+const DeleteButton = styled.div`
+    font-size: 12px;
+    color: gray;
+    position: absolute;
+    right: 10px;
+    bottom: 7px;
+    cursor: pointer;
+
+    &:focus {
+        outline: none;
+    }
 `;

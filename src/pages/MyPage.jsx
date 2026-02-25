@@ -17,6 +17,7 @@ const MyPage = () => {
     const navigate = useNavigate();
     const handleLogout = () => {
         postLogout();
+        navigate("/", { state: { isLogout: true } });
     }
 
     if (!profile) return <LoadingPage/>
@@ -27,7 +28,7 @@ const MyPage = () => {
                 <ProfileBlock 
                     nickname={profile.nickname} 
                     gender={genderInKorean(profile.gender)} 
-                    ageGroup={Math.floor((new Date().getFullYear() - profile.birth.split("-")[0]) / 10) * 10 + "대"} 
+                    ageGroup={Math.floor((new Date().getFullYear() - profile.birth?.split("-")[0]) / 10) * 10 + "대"} 
                     interest={categoryInKorean(profile.category)} 
                     my={true} 
                     onClick={()=>navigate("/my/profile")}/>
