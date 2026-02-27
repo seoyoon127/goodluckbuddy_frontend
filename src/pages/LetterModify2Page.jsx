@@ -20,6 +20,7 @@ import useGetLetterDetail from "../apis/useGetLetterDetail";
 import LoadingPage from "./LoadingPage";
 import usePatchLetter from "../apis/usePatchLetter";
 import categoryInEnglish from "../data/categoryInEnglish";
+import infoInEnglish from "../data/infoInEnglish";
 
 const LetterModify2Page = () => {
     const location = useLocation();
@@ -70,20 +71,22 @@ const LetterModify2Page = () => {
 
         setErrors(errors);
 
+        console.log(letter.infos)
+
         const letterChange = {
             title: title,
             content: content,
             letterDesign: selected,
             category: categoryInEnglish(category),
             infoNames: selectedInfos 
-                ? selectedInfos
-                : letter.infos.map(info => info.infoName)
+                ? selectedInfos.map(info => infoInEnglish(info))
+                : letter.infos
         }
 
-        console.log(letterChange)
         if (isValid) {
             if (letter.title == title && letter.content == content && letter.letterDesign == selected) {
                 alert("변경사항이 없습니다.")
+                navigate("/home");
             } else{
                 patchLetter({id, letter:letterChange});
             }
