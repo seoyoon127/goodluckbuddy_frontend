@@ -50,7 +50,7 @@ const HomePage = () => {
     return (
         <>
             <Page>
-                <LogoNavbar mypage={accessToken ? true : false}/>
+                <LogoNavbar my={accessToken ? true : false}/>
                 <Wrapper>
                     { accessToken && profile && <RecommendBlock nickname={profile.nickname} onClick={()=>navigate("/recommend")}/>}
                     <ContentsWrapper>
