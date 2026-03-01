@@ -20,7 +20,6 @@ import useGetLetterDetail from "../apis/useGetLetterDetail";
 import LoadingPage from "./LoadingPage";
 import usePatchLetter from "../apis/usePatchLetter";
 import categoryInEnglish from "../data/categoryInEnglish";
-import infoInEnglish from "../data/infoInEnglish";
 
 const LetterModify2Page = () => {
     const location = useLocation();
@@ -70,8 +69,6 @@ const LetterModify2Page = () => {
         });
 
         setErrors(errors);
-        console.log(category);
-        console.log(letter.category)
 
         const letterChange = {
             title: title,
@@ -79,7 +76,7 @@ const LetterModify2Page = () => {
             letterDesign: selected,
             category: category ? categoryInEnglish(category) : letter.category,
             infoNames: selectedInfos 
-                ? selectedInfos.map(info => infoInEnglish(info))
+                ? selectedInfos
                 : letter.infos
         }
 
@@ -87,7 +84,7 @@ const LetterModify2Page = () => {
             if (letter.title == title && letter.content == content 
                 && letter.letterDesign == selected 
                 && letter.category == category 
-                && letter.infos == selectedInfos.map(info => infoInEnglish(info))) {
+                && JSON.stringify(letter.infos) === JSON.stringify(selectedInfos)) {
                 alert("변경사항이 없습니다.")
                 navigate("/home");
             } else{
