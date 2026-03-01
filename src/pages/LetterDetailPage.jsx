@@ -104,7 +104,11 @@ const LetterDetailPage = () => {
                 <Wrapper>
                     <GreenBorder>{title}</GreenBorder>
                     <ContentWrapper>
-                            <Infos>{letterDetail.writerName}/{letterDetail.createdAt}</Infos>
+                            <Infos><Nickname onClick={(e)=>{
+                                e.stopPropagation();
+                                navigate(`/user/${letterDetail.writerId}`);}}>
+                                {letterDetail.writerName}
+                                </Nickname>/{letterDetail.createdAt}</Infos>
                             <LikeButton 
                                 selected={letterDetail.like}
                                 likeCount={letterDetail.likeCount}
@@ -286,4 +290,8 @@ const ReplyWrapper = styled.div`
     gap: 15px;
     margin-top: 10px;
     margin-bottom: 20px;
+`;
+
+const Nickname = styled.div`
+    cursor: pointer;
 `;
