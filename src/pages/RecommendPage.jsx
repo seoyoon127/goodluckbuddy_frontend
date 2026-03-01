@@ -33,6 +33,9 @@ const MyPage = () => {
                                 category={categoryInKorean(letter.category)}/>
                         ))
                     }
+                    {
+                        !letters && <SubTitle textE={"회원님을 위한 추천 편지가 없습니다."}/>
+                    }
                 </ContentsWrapper>
             </Wrapper>
         </>
