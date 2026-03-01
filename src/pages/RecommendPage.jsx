@@ -7,11 +7,13 @@ import PreviewBlock from "../components/block/PreviewBlock"
 import useGetProfile from "../apis/useGetProfile"
 import useGetRecommendLetters from "../apis/useGetRecommendLetters"
 import categoryInKorean from "../data/categoryInKorean"
+import LoadingPage from "./LoadingPage"
 
 const MyPage = () => {
-    const { data:profile } = useGetProfile();
-    const { data: result} = useGetRecommendLetters();
-    const letters = result.letters;
+    const { data:profile, isLoading: profileLoading} = useGetProfile();
+    const { data: result, isLoading: recommendLoading} = useGetRecommendLetters();
+    if (profileLoading || recommendLoading) return <LoadingPage />;
+    const letters = result?.letters ?? [];
     return (
         <>
             <Navbar title={"추천 편지"} mypage={true}/>
