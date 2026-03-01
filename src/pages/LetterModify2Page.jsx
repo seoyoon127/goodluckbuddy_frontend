@@ -28,7 +28,6 @@ const LetterModify2Page = () => {
     const { id } = useParams();
     const [title, setTitle] = useState("");
     const [selected, setSelected] = useState("GREEN");
-    const [src, setSrc] = useState(LetterGreen);
     const [content, setContent] = useState("");
     const navigate = useNavigate();
 
@@ -39,19 +38,18 @@ const LetterModify2Page = () => {
 
     const handleLetterDesign = (state) => {
         setSelected(state);
-        if (state == "GREEN"){
-            setSrc(LetterGreen)
-        } else if (state == "PINK"){
-            setSrc(LetterPink)
-        } else if (state == "SKYBLUE"){
-            setSrc(LetterSkyblue)
-        } else if (state == "PURPLE"){
-            setSrc(LetterPurple)
-        }
-    }
+    };
+
+    const letterImageMap = {
+        GREEN: LetterGreen,
+        PINK: LetterPink,
+        SKYBLUE: LetterSkyblue,
+        PURPLE: LetterPurple,
+    };
 
     const { data: letter } = useGetLetterDetail(id);
     const { mutate: patchLetter } = usePatchLetter();
+    const src = letterImageMap[selected];
 
     useEffect(() => {
         const fetchLetter = async () => {
@@ -70,9 +68,6 @@ const LetterModify2Page = () => {
 
         setErrors(errors);
 
-        console.log("before next:" + selectedInfos);
-        
-
         const letterChange = {
             title: title,
             content: content,
@@ -82,9 +77,6 @@ const LetterModify2Page = () => {
                 ? selectedInfos
                 : letter.infos
         }
-
-        console.log("before next:" + letterChange.infoNames);
-        console.log(letterChange.category)
 
         if (isValid) {
             if (letter.title == title && letter.content == content 
