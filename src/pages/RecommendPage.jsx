@@ -10,14 +10,15 @@ import categoryInKorean from "../data/categoryInKorean"
 
 const MyPage = () => {
     const { data:profile } = useGetProfile();
-    const { data: letters} = useGetRecommendLetters();
+    const { data: result} = useGetRecommendLetters();
+    const letters = result.letters;
     return (
         <>
             <Navbar title={"추천 편지"} mypage={true}/>
             <Wrapper>
                 <Title textGreen={profile.nickname} text={"님을 위한 추천!"}/>
                 <Image src={BirdFlySrc} alt="bird_fly"/>
-                <SubTitle textE={"20대 여성이 좋아요를 많이한 편지예요"}/>
+                <SubTitle textE={result?.phrase}/>
                 <ContentsWrapper>
                     {
                         letters && letters.map((letter) => (
