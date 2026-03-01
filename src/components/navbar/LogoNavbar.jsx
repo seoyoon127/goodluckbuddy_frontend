@@ -6,9 +6,16 @@ import RoundWhiteButton from '../button/RoundWhiteButton';
 
 const LogoNavbar = ({my, none}) =>{
     const navigate = useNavigate();
+    const handleClick = () => {
+        if (location.pathname === "/login") {
+            navigate("/");
+        } else {
+            navigate("/home");
+        }
+    };
     return(
         <Container>
-            <LogoPosition onClick={()=>navigate("/home")}><LogoImage src={LogoSrc} alt="logo"/></LogoPosition>
+            <LogoPosition onClick={handleClick}><LogoImage src={LogoSrc} alt="logo"/></LogoPosition>
             {my && !none && <IconPosition2 onClick={()=>navigate("/my")}><MyPageIcon/></IconPosition2>}
             {!my && !none && <IconPosition2 onClick={()=>navigate("/login")}><RoundWhiteButton text="로그인"/></IconPosition2>}
         </Container>

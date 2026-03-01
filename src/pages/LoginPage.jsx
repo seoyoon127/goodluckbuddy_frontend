@@ -10,7 +10,6 @@ const LoginPage = () => {
     const OAUTH_BASE = import.meta.env.VITE_API_BASE_URL;
     const [searchParams] = useSearchParams();
     const redirect = searchParams.get("redirect") || "/";
-    console.log("redirect:", redirect); 
     
     const handleKakaoLogin = () => {
         const encodedRedirect = encodeURIComponent(redirect);
@@ -23,7 +22,7 @@ const LoginPage = () => {
     };
     return (
         <>
-            <LogoNavbar none={true}/>
+            <LogoNavbar none={true} login={true}/>
             <Wrapper>
                 <Title textGreen={`간편 로그인`} text={`으로 \n 더 많은 기능을 이용해보세요`}/>
                 <Image src={BirdHappySrc} alt="bird_happy"/>
