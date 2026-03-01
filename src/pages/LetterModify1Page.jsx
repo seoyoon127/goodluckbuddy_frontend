@@ -39,7 +39,6 @@ const LetterModify1Page = () => {
 
     useEffect(() => {
         const fetchCategory = async () => {
-
             setCategory(categoryInKorean(letter.category));
             setSelectedInfos(letter.infos);
         };
@@ -48,6 +47,8 @@ const LetterModify1Page = () => {
     }, []);
 
     const handleNext = () => {
+        console.log("before next:" + selectedInfos);
+        console.log(category)
         navigate(`/letter/${id}/modify`, {
             state: {
                     category,

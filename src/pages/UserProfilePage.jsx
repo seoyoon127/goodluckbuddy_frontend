@@ -13,16 +13,17 @@ import { useEffect } from "react"
 
 const UserProfilePage = () => {
     const myId = useAuthStore((state) => state.id);
+    const accessToken = useAuthStore((state) => state.accessToken)
     const navigate = useNavigate();
     const {id} = useParams();
     const { data: profile } = useGetUserProfile(id);
     useEffect(() => {
         if (!profile) return;
 
-        if (profile.id == myId) {
+        if (accessToken && profile.id == myId) {
             navigate("/my", { replace: true });
         }
-    }, [profile, myId]);
+    }, [profile, myId, accessToken]);
     if (!profile) return <LoadingPage/>
     return (
         <>

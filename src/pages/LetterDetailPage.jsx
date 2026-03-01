@@ -8,7 +8,7 @@ import SquareGreenButton from "../components/button/SquareGreenButton";
 import RoundWhiteButton from "../components/button/RoundWhiteButton";
 import RoundGreenButton from "../components/button/RoundGreenButton";
 import { useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ReplyBlock from "../components/block/ReplyBlock";
 import LikeButton from "../components/button/LikeButton";
 import ReplyInput from "../components/input/ReplyInput";
@@ -27,9 +27,6 @@ import useDeleteReplyLike from "../apis/useDeleteReplyLike";
 import categoryInKorean from "../data/categoryInKorean";
 
 const LetterDetailPage = () => {
-    const [title, setTitle] = useState("");
-    const [src, setSrc] = useState(LetterGreen);
-    const [content, setContent] = useState("");
     const [replyView, setReplyView] = useState(false);
     const [reply, setReply] = useState("");
     const accessToken = useAuthStore((state) => state.accessToken);
@@ -63,17 +60,12 @@ const LetterDetailPage = () => {
 
     const navigate = useNavigate();
 
-    const handleLetterDesign = (state) => {
-        if (state == "GREEN"){
-            setSrc(LetterGreen)
-        } else if (state == "PINK"){
-            setSrc(LetterPink)
-        } else if (state == "SKYBLUE"){
-            setSrc(LetterSkyblue)
-        } else if (state == "PURPLE"){
-            setSrc(LetterPurple)
-        }
-    }
+    const letterImageMap = {
+        GREEN: LetterGreen,
+        PINK: LetterPink,
+        SKYBLUE: LetterSkyblue,
+        PURPLE: LetterPurple,
+    };
 
     const handleDelete = () => {
         deleteLetter();
@@ -85,26 +77,21 @@ const LetterDetailPage = () => {
         setReply("");
     }
 
-    useEffect(() => {
-        const fetchLetter = async () => {
-            setTitle(letterDetail.title);
-            setContent(letterDetail.content);
-            handleLetterDesign(letterDetail.letterDesign);
-        };
-
-        fetchLetter();
-    }, [letterDetail]);
-
     if (!letterDetail) return <LoadingPage/>;
+    const src = letterImageMap[letterDetail.letterDesign] || LetterGreen;
 
     return (
         <>
             <Page>
                 <Navbar title={"편지 상세"} mypage={true}/>
                 <Wrapper>
-                    <GreenBorder>{title}</GreenBorder>
+                    <GreenBorder>{letterDetail.title}</GreenBorder>
                     <ContentWrapper>
-                            <Infos>{letterDetail.writerName}/{letterDetail.createdAt}</Infos>
+                            <Infos><Nickname onClick={(e)=>{
+                                e.stopPropagation();
+                                navigate(`/user/${letterDetail.writerId}`);}}>
+                                {letterDetail.writerName}
+                                </Nickname>/{letterDetail.createdAt}</Infos>
                             <LikeButton 
                                 selected={letterDetail.like}
                                 likeCount={letterDetail.likeCount}
@@ -122,8 +109,8 @@ const LetterDetailPage = () => {
                     </ButtonWrapper>
                     <LetterContainer>
                         <LetterImg src={src}/>
-                        <ContentInput value={content}>{content}</ContentInput>
-                        <TextLength>{content.length}/200</TextLength>
+                        <ContentInput>{letterDetail?.content}</ContentInput>
+                        <TextLength>{letterDetail?.content.length}/200</TextLength>
                         {
                             letterDetail.mine &&
                             <ButtonPositionLeft>
@@ -286,4 +273,8 @@ const ReplyWrapper = styled.div`
     gap: 15px;
     margin-top: 10px;
     margin-bottom: 20px;
+`;
+
+const Nickname = styled.div`
+    cursor: pointer;
 `;
