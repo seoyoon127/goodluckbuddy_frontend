@@ -18,6 +18,8 @@ const usePatchWithdraw = () => {
         },
         onError: (error) => {
             console.error("회원 탈퇴 실패", error);
+            clearToken();
+    navigate("/");
         }
     });
 };

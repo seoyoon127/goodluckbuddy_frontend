@@ -5,11 +5,14 @@ import BirdSadSrc from "../assets/bird_sad.png"
 import SubTitle from "../components/text/SubTitle"
 import Button from "../components/button/SquareWhiteLongButton"
 import usePatchWithdraw from "../apis/usePatchWithdraw"
+import { useNavigate } from "react-router-dom"
 
 const WithdrawPage = () => {
     const { mutate:withdraw } = usePatchWithdraw();
+    const navigate = useNavigate();
     const handleWithdraw = () => {
         withdraw();
+        navigate("/");
     }
     return (
         <>
