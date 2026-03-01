@@ -23,13 +23,14 @@ const HomePage = () => {
     const accessToken = useAuthStore((state) => state.accessToken);
     const setId = useAuthStore((state) => state.setId);
 
-    const { data:profile } = useGetProfile();
-
     useEffect(() => {
         if (!token) return;
 
         setAccessToken(token);
     }, [token]);
+
+    
+    const { data:profile } = useGetProfile();
     
     useEffect(() => {
         if (!profile) return;
@@ -45,7 +46,7 @@ const HomePage = () => {
         sort: sort === "최신순" ? "LATEST" : "LIKE"
     });
 
-     if (!letters) return <LoadingPage/>;
+    if (!letters) return <LoadingPage/>;
 
     return (
         <>
