@@ -70,15 +70,21 @@ const LetterModify2Page = () => {
 
         setErrors(errors);
 
+        console.log("before next:" + selectedInfos);
+        
+
         const letterChange = {
             title: title,
             content: content,
             letterDesign: selected,
             category: category ? categoryInEnglish(category) : letter.category,
-            infoNames: selectedInfos 
+            infoNames: selectedInfos && selectedInfos.length > 0
                 ? selectedInfos
                 : letter.infos
         }
+
+        console.log("before next:" + letterChange.infoNames);
+        console.log(letterChange.category)
 
         if (isValid) {
             if (letter.title == title && letter.content == content 
