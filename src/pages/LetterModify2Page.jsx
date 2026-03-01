@@ -70,21 +70,24 @@ const LetterModify2Page = () => {
         });
 
         setErrors(errors);
-
-        console.log(letter.infos)
+        console.log(category);
+        console.log(letter.category)
 
         const letterChange = {
             title: title,
             content: content,
             letterDesign: selected,
-            category: categoryInEnglish(category),
+            category: category ? categoryInEnglish(category) : letter.category,
             infoNames: selectedInfos 
                 ? selectedInfos.map(info => infoInEnglish(info))
                 : letter.infos
         }
 
         if (isValid) {
-            if (letter.title == title && letter.content == content && letter.letterDesign == selected) {
+            if (letter.title == title && letter.content == content 
+                && letter.letterDesign == selected 
+                && letter.category == category 
+                && letter.infos == selectedInfos.map(info => infoInEnglish(info))) {
                 alert("변경사항이 없습니다.")
                 navigate("/home");
             } else{
