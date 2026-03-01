@@ -7,17 +7,20 @@ import PreviewBlock from "../components/block/PreviewBlock"
 import useGetProfile from "../apis/useGetProfile"
 import useGetRecommendLetters from "../apis/useGetRecommendLetters"
 import categoryInKorean from "../data/categoryInKorean"
+import LoadingPage from "./LoadingPage"
 
 const MyPage = () => {
-    const { data:profile } = useGetProfile();
-    const { data: letters} = useGetRecommendLetters();
+    const { data:profile, isLoading: profileLoading} = useGetProfile();
+    const { data: result, isLoading: recommendLoading} = useGetRecommendLetters();
+    if (profileLoading || recommendLoading) return <LoadingPage />;
+    const letters = result?.letters ?? [];
     return (
         <>
             <Navbar title={"추천 편지"} mypage={true}/>
             <Wrapper>
                 <Title textGreen={profile.nickname} text={"님을 위한 추천!"}/>
                 <Image src={BirdFlySrc} alt="bird_fly"/>
-                <SubTitle textE={"20대 여성이 좋아요를 많이한 편지예요"}/>
+                <SubTitle textE={result?.phrase}/>
                 <ContentsWrapper>
                     {
                         letters && letters.map((letter) => (
@@ -29,6 +32,9 @@ const MyPage = () => {
                                 likeCount={letter.likeCount}
                                 category={categoryInKorean(letter.category)}/>
                         ))
+                    }
+                    {
+                        !letters && <SubTitle textE={"회원님을 위한 추천 편지가 없습니다."}/>
                     }
                 </ContentsWrapper>
             </Wrapper>

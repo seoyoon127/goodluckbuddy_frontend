@@ -18,7 +18,7 @@ import usePostNicknameDuplicate from "../apis/usePostNicknameDuplicate";
 import usePatchUser from "../apis/usePatchUser";
 import categoryInEnglish from "../data/categoryInEnglish";
 
-const MyPage = () => {
+const SignupPage = () => {
     const [nickname, setNickname] = useState("");
     const [gender, setGender] = useState(null);
     const [year, setYear] = useState("년");
@@ -29,11 +29,8 @@ const MyPage = () => {
     const [searchParams] = useSearchParams();
     const token = searchParams.get("token");
     const setAccessToken = useAuthStore((state) => state.setAccessToken);
-    const setId = useAuthStore((state) => state.setId);
 
-    const { data:profile } = useGetProfile();
-
-    const [errors, setErrors] = useState({
+     const [errors, setErrors] = useState({
         nickname: "",
         gender: "",
         birth: "",
@@ -45,10 +42,8 @@ const MyPage = () => {
 
     useEffect(() => {
         if (!token) return;
-        if (!profile) return;
         setAccessToken(token);
-        setId(profile.id);
-    }, [token, profile]);
+    }, [token]);
 
     const handleNicknameDuplicate = () => {
         postNicknameDuplicate(nickname);
@@ -146,7 +141,7 @@ const MyPage = () => {
         </>
     )
 }
-export default MyPage
+export default SignupPage
 
 const Wrapper = styled.div`
     display: flex;
