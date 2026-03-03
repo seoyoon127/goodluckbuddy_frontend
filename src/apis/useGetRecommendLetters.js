@@ -6,7 +6,7 @@ const useGetRecommendLetters = () => {
         queryKey: ["recommendLetters"],
         queryFn: async () => {
             const response = await axiosInstance.get(`/api/letters/recommend`);
-            return response.data.result.letters ?? [];
+            return response.data.result ?? { letters: [], phrase: "" };
         },
     });
 }
